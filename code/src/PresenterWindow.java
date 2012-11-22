@@ -9,6 +9,7 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
@@ -18,19 +19,19 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Tracker;
 
 
 public class PresenterWindow extends ApplicationWindow {
 
-	private static EditBoundingBoxDialog editBoundingBox;
 	private Canvas canvas;
 	private Image image;
 	private int x = 50, y = 50, width = 100, height = 100;
+	private boolean goTracker = false;
 	
 	protected PresenterWindow() {
 		super(null);
 	    setShellStyle(SWT.RESIZE | SWT.MIN | SWT.MAX);
-		editBoundingBox = new EditBoundingBoxDialog(getShell(), this);
 	}
 	
 	public int getXOffset() {
@@ -132,9 +133,10 @@ public class PresenterWindow extends ApplicationWindow {
 	    MenuItem item1 = new MenuItem(contextMenu, SWT.PUSH);
 	    item1.setText("edit Boundingbox");
 	    item1.addSelectionListener(new SelectionListener() {
+
 			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				editBoundingBox.open();
+			public void widgetSelected(SelectionEvent e) {
+				goTracker = true;
 			}
 
 			@Override
@@ -143,6 +145,7 @@ public class PresenterWindow extends ApplicationWindow {
 				
 			}
 		});
+	    
 	    MenuItem item2 = new MenuItem(contextMenu, SWT.PUSH);
 	    item2.setText("set background color");
 	    item2.addSelectionListener(new SelectionAdapter() {
@@ -194,10 +197,21 @@ public class PresenterWindow extends ApplicationWindow {
 			
 			@Override
 			public void mouseDown(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
+				if(goTracker) {
+					Tracker tracker = new Tracker(canvas, SWT.RESIZE);
+					tracker.setRectangles(new Rectangle[] { new Rectangle(e.x, e.y,
+							1, 1), });
+					tracker.open();
+					goTracker = false;
+					Rectangle result = tracker.getRectangles()[0];
+					x = (int) ((double) (result.x + result.width/2) / canvas.getBounds().width * 100);
+					y = (int) ((double) (result.y + result.height/2) / canvas.getBounds().height * 100);
+					width = (int) ((double) result.width / canvas.getBounds().width * 100);
+					height = (int) ((double) result.height / canvas.getBounds().height * 100);
+					refreshLayout();
+				}
 			}
-			
+
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				toggleFullscreen();	
