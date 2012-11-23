@@ -17,5 +17,9 @@ public class Presenter {
 		fileDialog.open();
 
 		Presentation.load(fileDialog.getFileNames());
+
+		EditDialog editDialog = new EditDialog(new Shell());
+		editDialog.setBlockOnOpen(true);
+		editDialog.open();
 	}
 }

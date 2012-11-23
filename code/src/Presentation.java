@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,7 +49,7 @@ public class Presentation {
 	private int index;
 
 	public Presentation() {
-		// TODO Auto-generated constructor stub
+		slides = new ArrayList<Slide>();
 	}
 
 	private void loadPhotos(String[] path) {
