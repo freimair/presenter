@@ -1,25 +1,18 @@
+import org.jdom.Element;
 
 
-public class Slide implements Displayable {
+public class Slide extends Displayable {
 
-	public Slide() {
-		// TODO Auto-generated constructor stub
+	private Notes notes;
+
+	public Slide(Element element) {
+		setImage(element.getChildText("content"));
+		if (null != element.getChildText("notes"))
+			notes = new Notes(element.getChildText("notes"));
 	}
 
 	public Notes getNotes() {
-		return null;
-	}
-
-	@Override
-	public Class getContentType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getContent() {
-		// TODO Auto-generated method stub
-		return null;
+		return notes;
 	}
 
 }

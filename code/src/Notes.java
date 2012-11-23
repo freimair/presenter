@@ -1,16 +1,8 @@
 
-public class Notes implements Displayable {
+public class Notes {
 
-	@Override
-	public Class getContentType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getContent() {
-		// TODO Auto-generated method stub
-		return null;
+	public Notes(String childText) {
+		// TODO Auto-generated constructor stub
 	}
 
 }

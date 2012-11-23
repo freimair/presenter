@@ -1,8 +1,14 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 
 
 public class Presentation {
+
 	// ############ STATICS ############
 	private static Presentation instance = null;
 
@@ -13,7 +19,18 @@ public class Presentation {
 	}
 
 	public static void load(File path) {
-
+		SAXBuilder builder = new SAXBuilder();
+		try {
+			Element root = builder.build(path).getRootElement();
+			for (Object current : root.getChildren())
+				getInstance().slides.add(new Slide((Element) current));
+		} catch (JDOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public static Slide next() {
@@ -32,8 +49,11 @@ public class Presentation {
 		return getInstance().slides.get(index);
 	}
 
-	// ########## NON-STATICS ##########
+	public static List<Slide> getSlides() {
+		return getInstance().slides;
+	}
 
+	// ########## NON-STATICS ##########
 	private List<Slide> slides;
 	private int index;
 

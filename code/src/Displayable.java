@@ -1,7 +1,15 @@
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
 
-public interface Displayable {
-	public Class getContentType();
+public abstract class Displayable {
+	protected Image image = null;
 
-	public Object getContent();
+	protected void setImage(String path) {
+		image = new Image(Display.getCurrent(), path);
+	}
+
+	public Image getContent() {
+		return image;
+	}
 
 }
