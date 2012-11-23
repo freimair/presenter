@@ -2,6 +2,8 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -9,10 +11,10 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Composite;
@@ -28,10 +30,12 @@ public class PresenterWindow extends ApplicationWindow {
 	private Image image;
 	private int x = 50, y = 50, width = 100, height = 100;
 	private boolean goTracker = false;
+	private PresenterControl parentWindow;
 	
-	protected PresenterWindow() {
+	protected PresenterWindow(PresenterControl controlWindow) {
 		super(null);
 	    setShellStyle(SWT.RESIZE | SWT.MIN | SWT.MAX);
+		parentWindow = controlWindow;
 	}
 	
 	public int getXOffset() {
@@ -221,6 +225,15 @@ public class PresenterWindow extends ApplicationWindow {
 	    // Das Kontextmenü der Liste "bekannt machen"
 	    canvas.setMenu(contextMenu);
 	    parent.setMenu(contextMenu);
+
+	    parent.addDisposeListener(new DisposeListener() {
+
+			@Override
+			public void widgetDisposed(DisposeEvent arg0) {
+				parentWindow.close();
+			}
+		});
+
 		return canvas;
 	}
 }

@@ -97,7 +97,7 @@ public class PresenterControl extends ApplicationWindow {
 	protected Control createContents(Composite parent) {
 	    getShell().setText("Presenter");
 
-		window = new PresenterWindow();
+		window = new PresenterWindow(this);
 		window.open();
 	    
 		Composite container = (Composite) super.createContents(parent);
