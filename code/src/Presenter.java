@@ -1,3 +1,7 @@
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
@@ -16,7 +20,12 @@ public class Presenter {
 				.setFilterExtensions(new String[] { "*.pdf", "*.xml", "*.jpg" });
 		fileDialog.open();
 
-		Presentation.load(fileDialog.getFileNames());
+		List<File> result = new ArrayList<File>();
+		for (String current : fileDialog.getFileNames())
+			result.add(new File(fileDialog.getFilterPath()
+					+ System.getProperty("file.separator") + current));
+
+		Presentation.load(result);
 
 		EditDialog editDialog = new EditDialog(new Shell());
 		editDialog.setBlockOnOpen(true);

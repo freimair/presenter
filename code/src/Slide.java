@@ -14,7 +14,7 @@ public class Slide extends Displayable {
 	}
 
 	public Slide(File path) {
-
+		setImage(path.getAbsolutePath());
 	}
 
 	public Notes getNotes() {

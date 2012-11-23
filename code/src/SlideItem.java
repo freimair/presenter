@@ -1,4 +1,8 @@
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
@@ -16,9 +20,21 @@ public class SlideItem extends Composite {
 		Composite slideComposite = new Composite(parent, SWT.BORDER);
 		slideComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		Canvas slideCanvas = new Canvas(slideComposite, SWT.BORDER);
+		final Canvas slideCanvas = new Canvas(slideComposite, SWT.BORDER);
 		slideCanvas.setSize(100, 100);
-		// slideCanvas paint mySlide.getContent
+		slideCanvas.addPaintListener(new PaintListener() {
+			
+			@Override
+			public void paintControl(PaintEvent e) {
+				GC gc = e.gc;
+				Image image = mySlide.getContent();
+				gc.drawImage(image, 0, 0, image.getBounds().width,
+						image.getBounds().height, 0, 0,
+						slideCanvas.getBounds().width,
+						slideCanvas.getBounds().height);
+				gc.dispose();
+			}
+		});
 
 		Composite notesComposite = new Composite(slideComposite, SWT.NONE);
 		notesComposite.setLayout(new RowLayout(SWT.VERTICAL));

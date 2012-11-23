@@ -14,13 +14,13 @@ public class Presentation {
 		return instance;
 	}
 
-	public static void load(String[] paths) {
-		if (1 < paths.length)
-			getInstance().loadPhotos(paths);
-		else if (paths[0].toLowerCase().endsWith(".pdf"))
-			getInstance().loadFromPdf(paths[0]);
-		else if (paths[0].toLowerCase().endsWith(".xml"))
-			getInstance().loadFromXml(paths[0]);
+	public static void load(List<File> result) {
+		if (1 < result.size())
+			getInstance().loadPhotos(result);
+		else if (result.get(0).getName().toLowerCase().endsWith(".pdf"))
+			getInstance().loadFromPdf(result.get(0));
+		else if (result.get(0).getName().toLowerCase().endsWith(".xml"))
+			getInstance().loadFromXml(result.get(0));
 
 	}
 
@@ -52,17 +52,17 @@ public class Presentation {
 		slides = new ArrayList<Slide>();
 	}
 
-	private void loadPhotos(String[] path) {
-		for (String current : path)
-			slides.add(new Slide(new File(current)));
+	private void loadPhotos(List<File> result) {
+		for (File current : result)
+			slides.add(new Slide(current));
 	}
 
-	private void loadFromPdf(String path) {
+	private void loadFromPdf(File file) {
 		System.out.println("pdf");
 
 	}
 
-	private void loadFromXml(String path) {
+	private void loadFromXml(File file) {
 		System.out.println("presentator file");
 		// SAXBuilder builder = new SAXBuilder();
 		// try {
