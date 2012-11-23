@@ -11,7 +11,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
@@ -33,24 +32,20 @@ import org.jdom.input.SAXBuilder;
 
 public class PresenterControl extends ApplicationWindow {
 	
-	private static final String TYPE_IMAGE = "type";
 	int current = 0;
 	private PresenterWindow window;
 	private Label timerLabel;
 	private Element root;
 	private String dir;
 	private Canvas thumbnailCanvas;
-//    private Image thumb;
 	private Canvas notesCanvas;
-//    private Image note;
     private ScaledImage thumbnail, notes;
 
 	
-    public PresenterControl(PresenterWindow window) {
+	public PresenterControl() {
 		super(null);
 	    setShellStyle(SWT.RESIZE | SWT.MIN | SWT.MAX);
 		this.setBlockOnOpen(true);	    
-	    this.window = window;
 	}
 
 	public void toggleFullscreen() {
@@ -101,7 +96,9 @@ public class PresenterControl extends ApplicationWindow {
 	
 	protected Control createContents(Composite parent) {
 	    getShell().setText("Presenter");
-	    getShell().setSize(1440, 860);
+
+		window = new PresenterWindow();
+		window.open();
 	    
 		Composite container = (Composite) super.createContents(parent);
 		container.setLayout(new GridLayout(2, false));
@@ -110,7 +107,6 @@ public class PresenterControl extends ApplicationWindow {
 		slidenotes.setLayout(new FillLayout());
 		slidenotes.setLayoutData(new GridData(GridData.FILL_BOTH));
 	    notesCanvas = new Canvas(slidenotes, SWT.NONE);
-		// notesCanvas.setBounds(0, 0, 1200, 810);
 	    notesCanvas.addPaintListener(new PaintListener() {
 
 			public void paintControl(PaintEvent e) {
@@ -125,7 +121,7 @@ public class PresenterControl extends ApplicationWindow {
 
 		Button open = new Button(controlsComposite, SWT.PUSH);
 	    open.setText("open presentation");
-	    open.addSelectionListener(new SelectionListener() {
+	    open.addSelectionListener(new SelectionAdapter() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -135,12 +131,6 @@ public class PresenterControl extends ApplicationWindow {
 		        String[] filterExt = { "*.xml" };
 		        fd.setFilterExtensions(filterExt);
 		        open(fd.open());
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 	    
@@ -160,7 +150,7 @@ public class PresenterControl extends ApplicationWindow {
 	    slidecontrol.setLayout(new RowLayout(SWT.HORIZONTAL));
 	    Button buttonprev = new Button(slidecontrol, SWT.PUSH);
 	    buttonprev.setText("prev");
-	    buttonprev.addSelectionListener(new SelectionListener() {
+	    buttonprev.addSelectionListener(new SelectionAdapter() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -168,29 +158,17 @@ public class PresenterControl extends ApplicationWindow {
 				current %= root.getChildren().size();
 				refreshImage();
 			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
 		});
 	    
 	    Button buttonnext = new Button(slidecontrol, SWT.PUSH);
 	    buttonnext.setText("next");
-	    buttonnext.addSelectionListener(new SelectionListener() {
+	    buttonnext.addSelectionListener(new SelectionAdapter() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				current++;
 				current %= root.getChildren().size();
 				refreshImage();
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 	    
@@ -208,7 +186,7 @@ public class PresenterControl extends ApplicationWindow {
 	    startstopTimer.setText("start");
 	    startstopTimer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		final Timer timer = new Timer();
-	    startstopTimer.addSelectionListener(new SelectionListener() {
+	    startstopTimer.addSelectionListener(new SelectionAdapter() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -221,30 +199,18 @@ public class PresenterControl extends ApplicationWindow {
 					startstopTimer.setText("start");
 				}
 			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
 		});
 	    
 	    Button resetTimer = new Button(timerComposite, SWT.PUSH);
 	    resetTimer.setText("reset");
 	    resetTimer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-	    resetTimer.addSelectionListener(new SelectionListener() {
+	    resetTimer.addSelectionListener(new SelectionAdapter() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				timer.stop();
 				timer.reset();
 				startstopTimer.setText("start");
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 	    
