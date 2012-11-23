@@ -18,19 +18,14 @@ public class Presentation {
 		return instance;
 	}
 
-	public static void load(File path) {
-		SAXBuilder builder = new SAXBuilder();
-		try {
-			Element root = builder.build(path).getRootElement();
-			for (Object current : root.getChildren())
-				getInstance().slides.add(new Slide((Element) current));
-		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static void load(String[] paths) {
+		if (1 < paths.length)
+			getInstance().loadPhotos(paths);
+		else if (paths[0].toLowerCase().endsWith(".pdf"))
+			getInstance().loadFromPdf(paths[0]);
+		else if (paths[0].toLowerCase().endsWith(".xml"))
+			getInstance().loadFromXml(paths[0]);
+
 	}
 
 	public static Slide next() {
@@ -61,4 +56,28 @@ public class Presentation {
 		// TODO Auto-generated constructor stub
 	}
 
+	private void loadPhotos(String[] path) {
+		System.out.println("pictures");
+	}
+
+	private void loadFromPdf(String path) {
+		System.out.println("pdf");
+
+	}
+
+	private void loadFromXml(String path) {
+		System.out.println("presentator file");
+		SAXBuilder builder = new SAXBuilder();
+		try {
+			Element root = builder.build(new File(path)).getRootElement();
+			for (Object current : root.getChildren())
+				getInstance().slides.add(new Slide((Element) current));
+		} catch (JDOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

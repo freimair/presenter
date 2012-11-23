@@ -10,9 +10,12 @@ public class Presenter {
 		// myControl.open();
 
 		Display display = new Display();
-		FileDialog fileDialog = new FileDialog(new Shell(display), SWT.OPEN);
+		FileDialog fileDialog = new FileDialog(new Shell(display), SWT.MULTI
+				| SWT.OPEN);
 		fileDialog
 				.setFilterExtensions(new String[] { "*.pdf", "*.xml", "*.jpg" });
 		fileDialog.open();
+
+		Presentation.load(fileDialog.getFileNames());
 	}
 }
