@@ -1,61 +1,31 @@
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Pattern;
 
-import org.eclipse.jface.action.CoolBarManager;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.IContributionManager;
-import org.eclipse.jface.action.IMenuCreator;
-import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.internal.provisional.action.ICoolBarManager2;
-import org.eclipse.jface.internal.provisional.action.IToolBarManager2;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.events.HelpListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.CoolBar;
-import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.ToolBar;
-import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -132,11 +102,15 @@ public class PresenterControl extends ApplicationWindow {
 	protected Control createContents(Composite parent) {
 	    getShell().setText("Presenter");
 	    getShell().setSize(1440, 860);
-	    parent.setLayout(new RowLayout(SWT.VERTICAL));
 	    
-	    Composite slidenotes = new Composite(parent, SWT.BORDER);
+		Composite container = (Composite) super.createContents(parent);
+		container.setLayout(new GridLayout(2, false));
+
+		Composite slidenotes = new Composite(container, SWT.BORDER);
+		slidenotes.setLayout(new FillLayout());
+		slidenotes.setLayoutData(new GridData(GridData.FILL_BOTH));
 	    notesCanvas = new Canvas(slidenotes, SWT.NONE);
-	    notesCanvas.setBounds(0, 0, 1200, 810);
+		// notesCanvas.setBounds(0, 0, 1200, 810);
 	    notesCanvas.addPaintListener(new PaintListener() {
 
 			public void paintControl(PaintEvent e) {
@@ -146,7 +120,10 @@ public class PresenterControl extends ApplicationWindow {
 		      }
 		    });
 	    
-	    Button open = new Button(parent, SWT.PUSH);
+		Composite controlsComposite = new Composite(container, SWT.NONE);
+		controlsComposite.setLayout(new RowLayout(SWT.VERTICAL));
+
+		Button open = new Button(controlsComposite, SWT.PUSH);
 	    open.setText("open presentation");
 	    open.addSelectionListener(new SelectionListener() {
 			
@@ -167,7 +144,7 @@ public class PresenterControl extends ApplicationWindow {
 			}
 		});
 	    
-	    Composite slidethumbnail = new Composite(parent, SWT.BORDER);
+		Composite slidethumbnail = new Composite(controlsComposite, SWT.BORDER);
 	    thumbnailCanvas = new Canvas(slidethumbnail, SWT.NONE);
 	    thumbnailCanvas.setBounds(0, 0, 200, 200);
 	    thumbnailCanvas.addPaintListener(new PaintListener() {
@@ -179,7 +156,7 @@ public class PresenterControl extends ApplicationWindow {
 		      }
 		    });
 	    
-	    Composite slidecontrol = new Composite(parent, SWT.BORDER);
+		Composite slidecontrol = new Composite(controlsComposite, SWT.BORDER);
 	    slidecontrol.setLayout(new RowLayout(SWT.HORIZONTAL));
 	    Button buttonprev = new Button(slidecontrol, SWT.PUSH);
 	    buttonprev.setText("prev");
@@ -217,7 +194,7 @@ public class PresenterControl extends ApplicationWindow {
 			}
 		});
 	    
-	    Composite timerComposite = new Composite(parent, SWT.BORDER);
+		Composite timerComposite = new Composite(controlsComposite, SWT.BORDER);
 	    timerComposite.setLayout(new GridLayout(3, true));
 	    
 	    timerLabel = new Label(timerComposite, SWT.NONE);
@@ -290,7 +267,7 @@ public class PresenterControl extends ApplicationWindow {
 	        }
 	      });
 
-		return parent;
+		return container;
 	}
 	Font font = null;
 	
