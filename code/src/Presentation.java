@@ -1,10 +1,5 @@
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
 
 
 public class Presentation {
@@ -57,7 +52,8 @@ public class Presentation {
 	}
 
 	private void loadPhotos(String[] path) {
-		System.out.println("pictures");
+		for (String current : path)
+			slides.add(new Slide(new File(current)));
 	}
 
 	private void loadFromPdf(String path) {
@@ -67,17 +63,17 @@ public class Presentation {
 
 	private void loadFromXml(String path) {
 		System.out.println("presentator file");
-		SAXBuilder builder = new SAXBuilder();
-		try {
-			Element root = builder.build(new File(path)).getRootElement();
-			for (Object current : root.getChildren())
-				getInstance().slides.add(new Slide((Element) current));
-		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// SAXBuilder builder = new SAXBuilder();
+		// try {
+		// Element root = builder.build(new File(path)).getRootElement();
+		// for (Object current : root.getChildren())
+		// slides.add(new Slide((Element) current));
+		// } catch (JDOMException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 	}
 }

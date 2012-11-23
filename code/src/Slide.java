@@ -1,3 +1,5 @@
+import java.io.File;
+
 import org.jdom.Element;
 
 
@@ -9,6 +11,10 @@ public class Slide extends Displayable {
 		setImage(element.getChildText("content"));
 		if (null != element.getChildText("notes"))
 			notes = new Notes(element.getChildText("notes"));
+	}
+
+	public Slide(File path) {
+
 	}
 
 	public Notes getNotes() {
