@@ -107,6 +107,8 @@ public class OpenDialog extends TitleAreaDialog implements Runnable {
 
 	protected void newPressed() {
 		Presentation.create();
+		setReturnCode(OK);
+		close();
 	}
 
 	@Override
