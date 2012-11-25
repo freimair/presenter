@@ -60,6 +60,15 @@ public class EditDialog extends ApplicationWindow {
 			}
 		});
 
+		ToolItem exitButton = new ToolItem(toolbar, SWT.PUSH);
+		exitButton.setText("Exit");
+		exitButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				close();
+			}
+		});
 		return toolbar;
 	}
 
