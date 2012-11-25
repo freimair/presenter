@@ -8,40 +8,46 @@ public class Presentation {
 	// ############ STATICS ############
 	private static Presentation instance = null;
 
-	private static Presentation getInstance() {
+	private static void getInstance() {
 		if (null == instance)
 			instance = new Presentation();
-		return instance;
 	}
 
-	public static void load(List<File> result) {
-		if (1 < result.size())
-			getInstance().loadPhotos(result);
-		else if (result.get(0).getName().toLowerCase().endsWith(".pdf"))
-			getInstance().loadFromPdf(result.get(0));
-		else if (result.get(0).getName().toLowerCase().endsWith(".xml"))
-			getInstance().loadFromXml(result.get(0));
+	public static void open(String path) {
+		getInstance();
+	}
 
+	public static void create() {
+		getInstance();
+	}
+
+	public static void add(List<File> files) {
+		if (1 < files.size())
+			instance.loadPhotos(files);
+		else if (files.get(0).getName().toLowerCase().endsWith(".pdf"))
+			instance.loadFromPdf(files.get(0));
+		else if (files.get(0).getName().toLowerCase().endsWith(".xml"))
+			instance.loadFromXml(files.get(0));
 	}
 
 	public static Slide next() {
-		return get(++getInstance().index);
+		return get(++instance.index);
 	}
 
 	public static Slide getCurrent() {
-		return get(getInstance().index);
+		return get(instance.index);
 	}
 
 	public static Slide previous() {
-		return get(--getInstance().index);
+		return get(--instance.index);
 	}
 
 	public static Slide get(int index) {
-		return getInstance().slides.get(index);
+		return instance.slides.get(index);
 	}
 
 	public static List<Slide> getSlides() {
-		return getInstance().slides;
+		return instance.slides;
 	}
 
 	// ########## NON-STATICS ##########
