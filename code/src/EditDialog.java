@@ -27,6 +27,7 @@ public class EditDialog extends ApplicationWindow {
 
 	@Override
 	protected Control createContents(Composite parent) {
+		getShell().setSize(300, 300);
 		slidesComposite = (Composite) super.createContents(parent);
 		slidesComposite.setLayout(new RowLayout(SWT.VERTICAL));
 
@@ -78,6 +79,8 @@ public class EditDialog extends ApplicationWindow {
 
 		for (Slide current : Presentation.getSlides())
 			new SlideItem(slidesComposite, SWT.None, current);
+
+		slidesComposite.layout();
 	}
 
 }

@@ -14,13 +14,12 @@ public class SlideItem extends Composite {
 	private Slide mySlide;
 
 	public SlideItem(Composite parent, int style, Slide slide) {
-		super(parent, style);
+		super(parent, style | SWT.BORDER);
 		mySlide = slide;
 
-		Composite slideComposite = new Composite(parent, SWT.BORDER);
-		slideComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		this.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		final Canvas slideCanvas = new Canvas(slideComposite, SWT.BORDER);
+		final Canvas slideCanvas = new Canvas(this, SWT.BORDER);
 		slideCanvas.setSize(100, 100);
 		slideCanvas.addPaintListener(new PaintListener() {
 			
@@ -36,7 +35,7 @@ public class SlideItem extends Composite {
 			}
 		});
 
-		Composite notesComposite = new Composite(slideComposite, SWT.NONE);
+		Composite notesComposite = new Composite(this, SWT.NONE);
 		notesComposite.setLayout(new RowLayout(SWT.VERTICAL));
 
 		Button addTextButton = new Button(notesComposite, SWT.PUSH);
