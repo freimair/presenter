@@ -7,28 +7,39 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 
 
 public class EditDialog extends ApplicationWindow {
 
+	private Composite slidesComposite;
+
 	public EditDialog(Shell parentShell) {
 		super(null);
+
+		addToolBar(SWT.FLAT);
 	}
 
 	@Override
 	protected Control createContents(Composite parent) {
-		Composite container = (Composite) super.createContents(parent);
-		container.setLayout(new RowLayout(SWT.VERTICAL));
+		slidesComposite = (Composite) super.createContents(parent);
+		slidesComposite.setLayout(new RowLayout(SWT.VERTICAL));
 
-		for (Slide current : Presentation.getSlides())
-			new SlideItem(container, SWT.None, current);
+		update();
 
-		Button addButton = new Button(container, SWT.PUSH);
+		return slidesComposite;
+	}
+
+	@Override
+	protected Control createToolBarControl(Composite parent) {
+		ToolBar toolbar = (ToolBar) super.createToolBarControl(parent);
+
+		ToolItem addButton = new ToolItem(toolbar, SWT.PUSH);
 		addButton.setText("add");
 		addButton.addSelectionListener(new SelectionAdapter() {
 
@@ -45,10 +56,19 @@ public class EditDialog extends ApplicationWindow {
 							+ System.getProperty("file.separator") + current));
 
 				Presentation.add(result);
+				update();
 			}
 		});
 
-		return container;
+		return toolbar;
+	}
+
+	public void update() {
+		for (Control current : slidesComposite.getChildren())
+			current.dispose();
+
+		for (Slide current : Presentation.getSlides())
+			new SlideItem(slidesComposite, SWT.None, current);
 	}
 
 }
