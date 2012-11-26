@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PresentationEditor {
@@ -7,6 +8,12 @@ public class PresentationEditor {
 
 	public PresentationEditor(List<Slide> slides) {
 		presentation = slides;
+	}
+
+	public void add(String fileName) {
+		ArrayList<File> fileList = new ArrayList<File>();
+		fileList.add(new File(fileName));
+		add(fileList);
 	}
 
 	public void add(List<File> files) {

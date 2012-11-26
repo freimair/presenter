@@ -78,7 +78,7 @@ public class EditDialog extends ApplicationWindow {
 			current.dispose();
 
 		for (Slide current : Presentation.getSlides())
-			new SlideItem(slidesComposite, SWT.None, current);
+			new SlideItem(slidesComposite, SWT.None, current, this);
 
 		slidesComposite.layout();
 	}
