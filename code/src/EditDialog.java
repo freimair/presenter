@@ -56,7 +56,7 @@ public class EditDialog extends ApplicationWindow {
 					result.add(new File(fileDialog.getFilterPath()
 							+ System.getProperty("file.separator") + current));
 
-				Presentation.add(result);
+				Presentation.getEditor().add(result);
 				update();
 			}
 		});
