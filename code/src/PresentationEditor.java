@@ -1,5 +1,4 @@
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PresentationEditor {
@@ -10,19 +9,18 @@ public class PresentationEditor {
 		presentation = slides;
 	}
 
-	public void add(String fileName) {
-		ArrayList<File> fileList = new ArrayList<File>();
-		fileList.add(new File(fileName));
-		add(fileList);
+	public void add(File file) {
+		if (file.getName().toLowerCase().matches(".*\\.jpe?g"))
+			loadPhoto(file);
+		else if (file.getName().toLowerCase().endsWith(".pdf"))
+			loadFromPdf(file);
+		else if (file.getName().toLowerCase().endsWith(".xml"))
+			loadFromXml(file);
 	}
 
 	public void add(List<File> files) {
-		if (1 < files.size())
-			loadPhotos(files);
-		else if (files.get(0).getName().toLowerCase().endsWith(".pdf"))
-			loadFromPdf(files.get(0));
-		else if (files.get(0).getName().toLowerCase().endsWith(".xml"))
-			loadFromXml(files.get(0));
+		for(File current : files)
+			add(current);
 	}
 
 	public void add(Slide slide) {
@@ -42,9 +40,8 @@ public class PresentationEditor {
 		presentation.add(position, slide);
 	}
 
-	private void loadPhotos(List<File> result) {
-		for (File current : result)
-			presentation.add(new Slide(current));
+	private void loadPhoto(File file) {
+		presentation.add(new Slide(file));
 	}
 
 	private void loadFromPdf(File file) {

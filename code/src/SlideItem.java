@@ -1,3 +1,5 @@
+import java.io.File;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -56,7 +58,8 @@ public class SlideItem extends Composite {
 			public void widgetSelected(SelectionEvent arg0) {
 				FileDialog fileDialog = new FileDialog(getShell());
 				fileDialog.setFilterExtensions(new String[] { "*.jpg" });
-				Presentation.getEditor().add(fileDialog.getFileName());
+				Presentation.getEditor()
+						.add(new File(fileDialog.getFileName()));
 				myDialog.update();
 			}
 		});
