@@ -11,14 +11,14 @@ import org.jpedal.exception.PdfException;
 
 import presenter.ui.SWTUtils;
 
-public class PdfNotes extends Notes {
+public class PdfSlide extends Slide {
 
-	private File path;
-	private int pageNumber;
+	private File path = null;
+	private int pageNumber = 1;
 
-	public PdfNotes(File file, int page) {
-		path = file;
-		pageNumber = page;
+	public PdfSlide(File path, int page) {
+		this.path = path;
+		this.pageNumber = page;
 	}
 
 	@Override
@@ -33,9 +33,9 @@ public class PdfNotes extends Notes {
 			decoder.openPdfFile(path.getAbsolutePath());
 			// decoder.setPageParameters(1, pageNumber);
 			decoder.decodePage(pageNumber);
-			
+
 			BufferedImage image = new BufferedImage(1000, 1000,
-                    BufferedImage.TYPE_INT_BGR  );
+					BufferedImage.TYPE_INT_BGR);
 			Graphics g = image.getGraphics();
 			decoder.print(g);
 
@@ -49,4 +49,5 @@ public class PdfNotes extends Notes {
 		}
 		return null;
 	}
+
 }

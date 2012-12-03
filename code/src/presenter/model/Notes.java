@@ -1,5 +1,5 @@
 package presenter.model;
 
-public class Notes {
+public abstract class Notes extends Displayable {
 
 }

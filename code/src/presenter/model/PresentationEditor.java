@@ -3,6 +3,9 @@ package presenter.model;
 import java.io.File;
 import java.util.List;
 
+import org.jpedal.PdfDecoder;
+import org.jpedal.exception.PdfException;
+
 public class PresentationEditor {
 
 	private List<Slide> presentation;
@@ -51,7 +54,20 @@ public class PresentationEditor {
 	}
 
 	public void loadFromPdf(File file, boolean useEverySecondPageAsNotes) {
-		System.out.println("pdf" + useEverySecondPageAsNotes);
+		try {
+
+			PdfDecoder decoder = new PdfDecoder();
+			decoder.openPdfFile(file.getAbsolutePath());
+			for (int i = 0; i < decoder.getPageCount(); i++) {
+				Slide slide = new PdfSlide(file, i);
+				presentation.add(slide);
+				if (useEverySecondPageAsNotes)
+					slide.addNotes(new PdfNotes(file, ++i));
+			}
+		} catch (PdfException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private void loadFromXml(File file) {
