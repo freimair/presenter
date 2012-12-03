@@ -43,7 +43,7 @@ public class PresentationEditor {
 	}
 
 	private void loadPhoto(File file) {
-		presentation.add(new Slide(file));
+		presentation.add(new PhotoSlide(file));
 	}
 
 	public void loadFromPdf(File file) {

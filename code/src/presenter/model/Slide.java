@@ -3,7 +3,7 @@ package presenter.model;
 import java.io.File;
 
 
-public class Slide extends Displayable {
+public abstract class Slide extends Displayable {
 
 	private Notes notes;
 
@@ -12,10 +12,6 @@ public class Slide extends Displayable {
 	// if (null != element.getChildText("notes"))
 	// notes = new Notes(element.getChildText("notes"));
 	// }
-
-	public Slide(File path) {
-		setImage(path.getAbsolutePath());
-	}
 
 	public Notes getNotes() {
 		return notes;
