@@ -119,7 +119,7 @@ public class SlideItem extends Composite {
 			@Override
 			public void paintControl(PaintEvent e) {
 				GC gc = e.gc;
-				Image image = mySlide.getContent();
+				Image image = (Image) mySlide.getContent();
 				gc.drawImage(image, 0, 0, image.getBounds().width,
 						image.getBounds().height, 0, 0,
 						slideCanvas.getBounds().width,

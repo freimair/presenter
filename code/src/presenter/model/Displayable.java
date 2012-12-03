@@ -1,16 +1,15 @@
 package presenter.model;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 
 public abstract class Displayable {
-	protected Image image = null;
+	protected Object content = null;
 
-	protected void setImage(String path) {
-		image = new Image(Display.getCurrent(), path);
+	public void setContent(Object content) {
+		this.content = content;
 	}
 
-	public Image getContent() {
-		return image;
+	public Object getContent() {
+		return content;
 	}
 
+	public abstract Class<? extends Object> getContentType();
 }
