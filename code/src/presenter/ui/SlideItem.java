@@ -1,6 +1,7 @@
 package presenter.ui;
 import java.io.File;
 
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -14,7 +15,7 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 
-import presenter.model.Presentation;
+import presenter.model.PdfNotes;
 import presenter.model.Slide;
 
 
@@ -61,9 +62,20 @@ public class SlideItem extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				FileDialog fileDialog = new FileDialog(getShell());
-				fileDialog.setFilterExtensions(new String[] { "*.jpg" });
-				Presentation.getEditor()
-						.add(new File(fileDialog.getFileName()));
+				fileDialog.open();
+				File notesFile = new File(fileDialog.getFileName());
+
+				if (notesFile.getName().endsWith(".pdf")) {
+					InputDialog dialog = new InputDialog(getShell(), "",
+							"please select the pdf page number", "1", null);
+					dialog.open();
+					// dialog.getValue()
+					mySlide.addNotes(new PdfNotes(notesFile, Integer
+							.valueOf(dialog.getValue())));
+
+				} else
+					mySlide.addNotesFromFile(notesFile);
+
 				myDialog.update();
 			}
 		});
