@@ -1,3 +1,5 @@
+package presenter.ui;
+
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;

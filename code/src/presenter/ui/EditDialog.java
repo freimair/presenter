@@ -1,3 +1,5 @@
+package presenter.ui;
+
 import java.io.File;
 
 import org.eclipse.jface.window.ApplicationWindow;
@@ -12,6 +14,9 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+
+import presenter.model.Presentation;
+import presenter.model.Slide;
 
 
 public class EditDialog extends ApplicationWindow {

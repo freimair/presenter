@@ -1,6 +1,10 @@
+package presenter;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import presenter.ui.EditDialog;
+import presenter.ui.OpenDialog;
 
 
 public class Presenter {

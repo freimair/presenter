@@ -1,3 +1,4 @@
+package presenter.ui;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
@@ -12,6 +13,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
+
+import presenter.model.Presentation;
+import presenter.model.Slide;
 
 
 public class SlideItem extends Composite {

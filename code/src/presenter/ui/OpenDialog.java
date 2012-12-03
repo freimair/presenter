@@ -1,3 +1,5 @@
+package presenter.ui;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -13,6 +15,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+
+import presenter.Settings;
+import presenter.model.Presentation;
 
 public class OpenDialog extends TitleAreaDialog implements Runnable {
 

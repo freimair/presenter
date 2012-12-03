@@ -1,3 +1,4 @@
+package presenter.model;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 

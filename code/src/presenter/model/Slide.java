@@ -1,3 +1,5 @@
+package presenter.model;
+
 import java.io.File;
 
 import org.jdom.Element;
