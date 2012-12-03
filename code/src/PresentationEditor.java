@@ -44,9 +44,12 @@ public class PresentationEditor {
 		presentation.add(new Slide(file));
 	}
 
-	private void loadFromPdf(File file) {
-		System.out.println("pdf");
+	public void loadFromPdf(File file) {
+		loadFromPdf(file, false);
+	}
 
+	public void loadFromPdf(File file, boolean useEverySecondPageAsNotes) {
+		System.out.println("pdf" + useEverySecondPageAsNotes);
 	}
 
 	private void loadFromXml(File file) {
