@@ -1,7 +1,5 @@
 package presenter.model;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.File;
 
 import org.eclipse.swt.graphics.Image;
@@ -28,26 +26,23 @@ public class PdfSlide extends Slide {
 
 	@Override
 	public Object getContent() {
-		try {
-			PdfDecoder decoder = new PdfDecoder();
-			decoder.openPdfFile(path.getAbsolutePath());
-			// decoder.setPageParameters(1, pageNumber);
-			decoder.decodePage(pageNumber);
+		if (null == content) {
+			try {
+				PdfDecoder decoder = new PdfDecoder();
+				decoder.openPdfFile(path.getAbsolutePath());
 
-			BufferedImage image = new BufferedImage(1000, 1000,
-					BufferedImage.TYPE_INT_BGR);
-			Graphics g = image.getGraphics();
-			decoder.print(g);
-
-			return new Image(Display.getCurrent(), SWTUtils.convertToSWT(image));
-		} catch (PdfException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				return new Image(Display.getCurrent(),
+						SWTUtils.convertToSWT(decoder
+								.getPageAsImage(pageNumber)));
+			} catch (PdfException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		return null;
+		return content;
 	}
 
 }
