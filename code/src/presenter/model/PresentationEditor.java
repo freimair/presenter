@@ -41,6 +41,8 @@ public class PresentationEditor {
 	}
 
 	private void moveToPosition(Slide slide, int position) {
+		position = (position % presentation.size() + presentation.size())
+				% presentation.size();
 		remove(slide);
 		presentation.add(position, slide);
 	}

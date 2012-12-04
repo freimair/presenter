@@ -35,6 +35,8 @@ public class Presentation {
 	}
 
 	public static Slide get(int index) {
+		index = (index % instance.slides.size() + instance.slides.size())
+				% instance.slides.size();
 		return instance.slides.get(index);
 	}
 
