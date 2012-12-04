@@ -4,8 +4,14 @@ import java.io.File;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -33,8 +39,29 @@ public class EditDialog extends ApplicationWindow {
 	@Override
 	protected Control createContents(Composite parent) {
 		getShell().setSize(1000, 700);
-		slidesComposite = (Composite) super.createContents(parent);
+		Composite container = (Composite) super.createContents(parent);
+		container.setLayoutData(new GridData(GridData.FILL_BOTH));
+		container.setLayout(new FillLayout());
+
+		ScrolledComposite scrolledSlideComposite = new ScrolledComposite(
+				container, SWT.V_SCROLL | SWT.BORDER);
+		scrolledSlideComposite.setLayout(new FillLayout());
+		scrolledSlideComposite.setExpandHorizontal(true);
+		scrolledSlideComposite.setExpandVertical(true);
+		slidesComposite = new Composite(scrolledSlideComposite, SWT.NONE);
+		scrolledSlideComposite.setContent(slidesComposite);
 		slidesComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+		slidesComposite.addPaintListener(new PaintListener() {
+
+			@Override
+			public void paintControl(PaintEvent e) {
+				Rectangle r = slidesComposite.getParent().getClientArea();
+				((ScrolledComposite) slidesComposite.getParent())
+						.setMinSize(slidesComposite.computeSize(r.width,
+								SWT.DEFAULT));
+			}
+		});
 
 		update();
 
@@ -117,6 +144,7 @@ public class EditDialog extends ApplicationWindow {
 		for (Slide current : Presentation.getSlides())
 			new SlideItem(slidesComposite, SWT.None, current, this);
 
+		slidesComposite.redraw();
 		slidesComposite.layout();
 	}
 
