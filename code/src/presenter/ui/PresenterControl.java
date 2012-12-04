@@ -53,8 +53,7 @@ public class PresenterControl extends ApplicationWindow {
 		try {
 			this.setNotes((Image) Presentation.getCurrent().getNotes()
 					.getContent());
-			this.setImage((Image) Presentation.getCurrent().getNotes()
-					.getContent());
+			this.setImage((Image) Presentation.getCurrent().getContent());
 
 		} catch (NullPointerException e) {
 			this.setImage((Image) Presentation.getCurrent().getContent());
@@ -195,6 +194,9 @@ public class PresenterControl extends ApplicationWindow {
 	          }
 	        }
 	      });
+
+		parent.layout();
+		refreshImage();
 
 		return container;
 	}
