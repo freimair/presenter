@@ -16,6 +16,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -116,42 +117,61 @@ public class SlideItem extends Composite {
 
 		final Canvas slideCanvas = new Canvas(this, SWT.BORDER);
 		slideCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		slideCanvas.addPaintListener(new PaintListener() {
+
+		Display.getCurrent().asyncExec(new Runnable() {
 
 			@Override
-			public void paintControl(PaintEvent e) {
-				GC gc = e.gc;
-				Image image = (Image) mySlide.getContent();
-				gc.setAntialias(SWT.ON);
-				gc.setInterpolation(SWT.HIGH);
-				gc.drawImage(image, 0, 0, image.getBounds().width,
-						image.getBounds().height, 0, 0,
-						slideCanvas.getBounds().width,
-						slideCanvas.getBounds().height);
-				gc.dispose();
+			public void run() {
+
+				final Image image = (Image) mySlide.getContent();
+
+				slideCanvas.addPaintListener(new PaintListener() {
+
+					@Override
+					public void paintControl(PaintEvent e) {
+						GC gc = e.gc;
+						gc.setAntialias(SWT.ON);
+						gc.setInterpolation(SWT.HIGH);
+						gc.drawImage(image, 0, 0, image.getBounds().width,
+								image.getBounds().height, 0, 0,
+								slideCanvas.getBounds().width,
+								slideCanvas.getBounds().height);
+						gc.dispose();
+					}
+				});
+				slideCanvas.redraw();
 			}
 		});
 
 		final Canvas notesCanvas = new Canvas(this, SWT.BORDER);
 		notesCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		notesCanvas.addPaintListener(new PaintListener() {
+		Display.getCurrent().asyncExec(new Runnable() {
 
 			@Override
-			public void paintControl(PaintEvent e) {
-				GC gc = e.gc;
-				Image image;
+			public void run() {
+				Image tmp;
 				try {
-					image = (Image) mySlide.getNotes().getContent();
+					tmp = (Image) mySlide.getNotes().getContent();
 				} catch (NullPointerException ex) {
-					image = (Image) mySlide.getContent();
+					tmp = (Image) mySlide.getContent();
 				}
-				gc.setAntialias(SWT.ON);
-				gc.setInterpolation(SWT.HIGH);
-				gc.drawImage(image, 0, 0, image.getBounds().width,
-						image.getBounds().height, 0, 0,
-						slideCanvas.getBounds().width,
-						slideCanvas.getBounds().height);
-				gc.dispose();
+				final Image image = tmp;
+				notesCanvas.addPaintListener(new PaintListener() {
+
+					@Override
+					public void paintControl(PaintEvent e) {
+						GC gc = e.gc;
+
+						gc.setAntialias(SWT.ON);
+						gc.setInterpolation(SWT.HIGH);
+						gc.drawImage(image, 0, 0, image.getBounds().width,
+								image.getBounds().height, 0, 0,
+								slideCanvas.getBounds().width,
+								slideCanvas.getBounds().height);
+						gc.dispose();
+					}
+				});
+				notesCanvas.redraw();
 			}
 		});
 
