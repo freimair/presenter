@@ -58,7 +58,7 @@ public class PresentationEditor {
 
 			PdfDecoder decoder = new PdfDecoder();
 			decoder.openPdfFile(file.getAbsolutePath());
-			for (int i = 0; i < decoder.getPageCount(); i++) {
+			for (int i = 1; i < decoder.getPageCount(); i++) {
 				Slide slide = new PdfSlide(file, i);
 				presentation.add(slide);
 				if (useEverySecondPageAsNotes)
