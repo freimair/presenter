@@ -125,6 +125,17 @@ public class EditDialog extends ApplicationWindow {
 			}
 		});
 
+		ToolItem startButton = new ToolItem(toolbar, SWT.PUSH);
+		startButton.setText("Start");
+		startButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				PresenterControl dialog = new PresenterControl();
+				dialog.open();
+			}
+		});
+
 		ToolItem exitButton = new ToolItem(toolbar, SWT.PUSH);
 		exitButton.setText("Exit");
 		exitButton.addSelectionListener(new SelectionAdapter() {

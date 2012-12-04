@@ -1,7 +1,5 @@
 package presenter.ui;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.regex.Pattern;
 
 import org.eclipse.jface.dialogs.IInputValidator;
@@ -25,12 +23,9 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
 
+import presenter.model.Presentation;
 
 
 public class PresenterControl extends ApplicationWindow {
@@ -38,8 +33,6 @@ public class PresenterControl extends ApplicationWindow {
 	int current = 0;
 	private PresenterWindow window;
 	private Label timerLabel;
-	private Element root;
-	private String dir;
 	private Canvas thumbnailCanvas;
 	private Canvas notesCanvas;
     private ScaledImage thumbnail, notes;
@@ -48,41 +41,25 @@ public class PresenterControl extends ApplicationWindow {
 	public PresenterControl() {
 		super(null);
 	    setShellStyle(SWT.RESIZE | SWT.MIN | SWT.MAX);
-		this.setBlockOnOpen(true);	    
+		this.setBlockOnOpen(true);
 	}
 
 	public void toggleFullscreen() {
 		getShell().setFullScreen(!getShell().getFullScreen());
 	}
 	
-	public void open(String file) {
-		dir = (new File(file)).getParent() + "/";
-	    SAXBuilder builder = new SAXBuilder();
-	    // Create the document
-	    try {
-	      root = builder.build(file).getRootElement();
-	      
-	    } catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-	    } catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    refreshImage();
-	}
-	
 	public void refreshImage() {
-		Element element = (Element) root.getChildren().get(current);
-		
-		window.setImage(new Image(Display.getCurrent(), dir + element.getChildText("content")));
-		this.setImage(new Image(Display.getCurrent(), dir + element.getChildText("content")));
-		if(null == dir + element.getChildText("notes"))
-			this.setNotes(new Image(Display.getCurrent(), dir + element.getChildText("content")));
-		else
-			this.setNotes(new Image(Display.getCurrent(), dir + element.getChildText("notes")));
-		
-			
+		window.setImage((Image) Presentation.getCurrent().getContent());
+		try {
+			this.setNotes((Image) Presentation.getCurrent().getNotes()
+					.getContent());
+			this.setImage((Image) Presentation.getCurrent().getNotes()
+					.getContent());
+
+		} catch (NullPointerException e) {
+			this.setImage((Image) Presentation.getCurrent().getContent());
+			this.setNotes((Image) Presentation.getCurrent().getContent());
+		}
 	}
 	
 	public void setImage(Image thumbnail) {
@@ -122,21 +99,6 @@ public class PresenterControl extends ApplicationWindow {
 		Composite controlsComposite = new Composite(container, SWT.NONE);
 		controlsComposite.setLayout(new RowLayout(SWT.VERTICAL));
 
-		Button open = new Button(controlsComposite, SWT.PUSH);
-	    open.setText("open presentation");
-	    open.addSelectionListener(new SelectionAdapter() {
-			
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-		        FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
-		        fd.setText("Open");
-		        fd.setFilterPath("C:/");
-		        String[] filterExt = { "*.xml" };
-		        fd.setFilterExtensions(filterExt);
-		        open(fd.open());
-			}
-		});
-	    
 		Composite slidethumbnail = new Composite(controlsComposite, SWT.BORDER);
 	    thumbnailCanvas = new Canvas(slidethumbnail, SWT.NONE);
 	    thumbnailCanvas.setBounds(0, 0, 200, 200);
@@ -157,8 +119,7 @@ public class PresenterControl extends ApplicationWindow {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				current--;
-				current %= root.getChildren().size();
+				Presentation.previous();
 				refreshImage();
 			}
 		});
@@ -169,8 +130,7 @@ public class PresenterControl extends ApplicationWindow {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				current++;
-				current %= root.getChildren().size();
+				Presentation.next();
 				refreshImage();
 			}
 		});

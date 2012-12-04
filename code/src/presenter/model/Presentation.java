@@ -48,7 +48,7 @@ public class Presentation {
 
 	// ########## NON-STATICS ##########
 	private List<Slide> slides;
-	private int index;
+	private int index = 0;
 
 	public Presentation() {
 		slides = new ArrayList<Slide>();
