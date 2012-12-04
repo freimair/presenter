@@ -13,7 +13,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
@@ -128,8 +127,21 @@ public class SlideItem extends Composite {
 			}
 		});
 
-		Composite notesComposite = new Composite(this, SWT.NONE);
-		notesComposite.setLayout(new RowLayout(SWT.VERTICAL));
+		Canvas notesCanvas = new Canvas(this, SWT.BORDER);
+		notesCanvas.setSize(100, 100);
+		notesCanvas.addPaintListener(new PaintListener() {
+
+			@Override
+			public void paintControl(PaintEvent e) {
+				GC gc = e.gc;
+				Image image = (Image) mySlide.getNotes().getContent();
+				gc.drawImage(image, 0, 0, image.getBounds().width,
+						image.getBounds().height, 0, 0,
+						slideCanvas.getBounds().width,
+						slideCanvas.getBounds().height);
+				gc.dispose();
+			}
+		});
 
 	}
 }
