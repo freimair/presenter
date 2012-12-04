@@ -3,10 +3,9 @@ import java.io.File;
 
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -14,10 +13,10 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
@@ -149,65 +148,77 @@ public class SlideItem extends Composite {
 			}
 		});
 
-		final Canvas slideCanvas = new Canvas(this, SWT.BORDER);
-		slideCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		final Label slideLabel = new Label(this, SWT.CENTER);
+		slideLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				true));
+		slideLabel.setBackground(new Color(getDisplay(), 50, 50, 50));
 
 		Display.getCurrent().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
 
-				final Image image = (Image) mySlide.getContent();
+				Image src = (Image) mySlide.getContent();
+				Point dimensions = resize(src.getBounds(),
+						slideLabel.getBounds());
 
-				slideCanvas.addPaintListener(new PaintListener() {
+				final Image target = new Image(getDisplay(), dimensions.x,
+						dimensions.y);
 
-					@Override
-					public void paintControl(PaintEvent e) {
-						GC gc = e.gc;
-						gc.setAntialias(SWT.ON);
-						gc.setInterpolation(SWT.HIGH);
-						gc.drawImage(image, 0, 0, image.getBounds().width,
-								image.getBounds().height, 0, 0,
-								slideCanvas.getBounds().width,
-								slideCanvas.getBounds().height);
-						gc.dispose();
-					}
-				});
-				slideCanvas.redraw();
+				GC gc = new GC(target);
+				gc.setAntialias(SWT.ON);
+				gc.setInterpolation(SWT.HIGH);
+				gc.drawImage(src, 0, 0, src.getBounds().width,
+						src.getBounds().height, 0, 0, dimensions.x,
+						dimensions.y);
+
+				slideLabel.setImage(target);
+				slideLabel.redraw();
 			}
 		});
 
-		final Canvas notesCanvas = new Canvas(this, SWT.BORDER);
-		notesCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		final Label notesLabel = new Label(this, SWT.CENTER);
+		notesLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				true));
+		notesLabel.setBackground(new Color(getDisplay(), 50, 50, 50));
+
 		Display.getCurrent().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
-				Image tmp;
+				Image src;
 				try {
-					tmp = (Image) mySlide.getNotes().getContent();
+					src = (Image) mySlide.getNotes().getContent();
 				} catch (NullPointerException ex) {
-					tmp = (Image) mySlide.getContent();
+					src = (Image) mySlide.getContent();
 				}
-				final Image image = tmp;
-				notesCanvas.addPaintListener(new PaintListener() {
 
-					@Override
-					public void paintControl(PaintEvent e) {
-						GC gc = e.gc;
+				Point dimensions = resize(src.getBounds(),
+						notesLabel.getBounds());
+				final Image target = new Image(getDisplay(), dimensions.x,
+						dimensions.y);
 
-						gc.setAntialias(SWT.ON);
-						gc.setInterpolation(SWT.HIGH);
-						gc.drawImage(image, 0, 0, image.getBounds().width,
-								image.getBounds().height, 0, 0,
-								slideCanvas.getBounds().width,
-								slideCanvas.getBounds().height);
-						gc.dispose();
-					}
-				});
-				notesCanvas.redraw();
+				GC gc = new GC(target);
+				gc.setAntialias(SWT.ON);
+				gc.setInterpolation(SWT.HIGH);
+				gc.drawImage(src, 0, 0, src.getBounds().width,
+						src.getBounds().height, 0, 0, dimensions.x,
+						dimensions.y);
+
+				notesLabel.setImage(target);
+				notesLabel.redraw();
 			}
 		});
 
+	}
+
+	private Point resize(Rectangle src, Rectangle target) {
+		Point result = new Point(target.width, target.height);
+		if (src.width > src.height)
+			result.y = (int) ((double) target.width / src.width * src.height);
+		else
+			result.x = (int) ((double) target.width / src.height * src.width);
+
+		return result;
 	}
 }
