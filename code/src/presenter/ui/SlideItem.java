@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
 import presenter.model.PdfNotes;
+import presenter.model.Presentation;
 import presenter.model.Slide;
 
 
@@ -112,6 +113,39 @@ public class SlideItem extends Composite {
 						+ rect.height));
 				dropMenu.setLocation(point.x, point.y);
 				dropMenu.setVisible(true);
+			}
+		});
+
+		ToolItem upButton = new ToolItem(toolbar, SWT.PUSH);
+		upButton.setText("up");
+		upButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Presentation.getEditor().moveUp(mySlide);
+				myDialog.update();
+			}
+		});
+
+		ToolItem downButton = new ToolItem(toolbar, SWT.PUSH);
+		downButton.setText("down");
+		downButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Presentation.getEditor().moveDown(mySlide);
+				myDialog.update();
+			}
+		});
+
+		ToolItem removeButton = new ToolItem(toolbar, SWT.PUSH);
+		removeButton.setText("x");
+		removeButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Presentation.getEditor().remove(mySlide);
+				myDialog.update();
 			}
 		});
 

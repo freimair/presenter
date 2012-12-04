@@ -41,8 +41,12 @@ public class PresentationEditor {
 	}
 
 	private void moveToPosition(Slide slide, int position) {
-		presentation.remove(slide);
+		remove(slide);
 		presentation.add(position, slide);
+	}
+
+	public void remove(Slide slide) {
+		presentation.remove(slide);
 	}
 
 	private void loadPhoto(File file) {
