@@ -22,6 +22,7 @@ import presenter.model.Slide;
 public class EditDialog extends ApplicationWindow {
 
 	private Composite slidesComposite;
+	private int size = 500;
 
 	public EditDialog(Shell parentShell) {
 		super(null);
@@ -75,6 +76,28 @@ public class EditDialog extends ApplicationWindow {
 			}
 		});
 
+		ToolItem zoomInButton = new ToolItem(toolbar, SWT.PUSH);
+		zoomInButton.setText("+");
+		zoomInButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				size *= 1.11111f;
+				update();
+			}
+		});
+
+		ToolItem zoomOutButton = new ToolItem(toolbar, SWT.PUSH);
+		zoomOutButton.setText("-");
+		zoomOutButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				size *= 0.9f;
+				update();
+			}
+		});
+
 		ToolItem exitButton = new ToolItem(toolbar, SWT.PUSH);
 		exitButton.setText("Exit");
 		exitButton.addSelectionListener(new SelectionAdapter() {
@@ -95,6 +118,10 @@ public class EditDialog extends ApplicationWindow {
 			new SlideItem(slidesComposite, SWT.None, current, this);
 
 		slidesComposite.layout();
+	}
+
+	public int getTileWidth() {
+		return size;
 	}
 
 }

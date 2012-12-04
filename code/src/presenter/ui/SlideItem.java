@@ -40,6 +40,10 @@ public class SlideItem extends Composite {
 
 		this.setLayout(new GridLayout(2, false));
 
+		// TODO find appropriate aspect ratio
+		int width = myDialog.getTileWidth();
+		this.setLayoutData(new RowData(width, width / 2));
+
 		ToolBar toolbar = new ToolBar(this, SWT.FLAT);
 		GridData layout = new GridData();
 		layout.horizontalSpan = 2;
