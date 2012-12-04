@@ -31,9 +31,9 @@ public class EditDialog extends ApplicationWindow {
 
 	@Override
 	protected Control createContents(Composite parent) {
-		getShell().setSize(300, 300);
+		getShell().setSize(1000, 700);
 		slidesComposite = (Composite) super.createContents(parent);
-		slidesComposite.setLayout(new RowLayout(SWT.VERTICAL));
+		slidesComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
 		update();
 

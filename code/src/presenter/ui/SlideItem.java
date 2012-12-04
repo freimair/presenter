@@ -13,6 +13,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
@@ -43,10 +44,6 @@ public class SlideItem extends Composite {
 		GridData layout = new GridData();
 		layout.horizontalSpan = 2;
 		toolbar.setLayoutData(layout);
-
-		ToolItem addTextButton = new ToolItem(toolbar, SWT.PUSH);
-		addTextButton.setEnabled(false);
-		addTextButton.setText("add Text notes");
 
 		ToolItem addNotesButton = new ToolItem(toolbar, SWT.DROP_DOWN);
 		addNotesButton.setText("add notes");
@@ -112,7 +109,7 @@ public class SlideItem extends Composite {
 		});
 
 		final Canvas slideCanvas = new Canvas(this, SWT.BORDER);
-		slideCanvas.setSize(100, 100);
+		slideCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		slideCanvas.addPaintListener(new PaintListener() {
 
 			@Override
@@ -127,8 +124,8 @@ public class SlideItem extends Composite {
 			}
 		});
 
-		Canvas notesCanvas = new Canvas(this, SWT.BORDER);
-		notesCanvas.setSize(100, 100);
+		final Canvas notesCanvas = new Canvas(this, SWT.BORDER);
+		notesCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		notesCanvas.addPaintListener(new PaintListener() {
 
 			@Override
