@@ -43,6 +43,8 @@ public class SlideItem extends Composite {
 		// TODO find appropriate aspect ratio
 		int width = myDialog.getTileWidth();
 		this.setLayoutData(new RowData(width, width / 2));
+		this.setBackground(parent.getDisplay().getSystemColor(
+				SWT.COLOR_DARK_GRAY));
 
 		ToolBar toolbar = new ToolBar(this, SWT.FLAT);
 		GridData layout = new GridData();

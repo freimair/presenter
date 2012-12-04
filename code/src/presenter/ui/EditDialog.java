@@ -44,13 +44,15 @@ public class EditDialog extends ApplicationWindow {
 		container.setLayout(new FillLayout());
 
 		ScrolledComposite scrolledSlideComposite = new ScrolledComposite(
-				container, SWT.V_SCROLL | SWT.BORDER);
+				container, SWT.V_SCROLL);
 		scrolledSlideComposite.setLayout(new FillLayout());
 		scrolledSlideComposite.setExpandHorizontal(true);
 		scrolledSlideComposite.setExpandVertical(true);
 		slidesComposite = new Composite(scrolledSlideComposite, SWT.NONE);
 		scrolledSlideComposite.setContent(slidesComposite);
 		slidesComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		slidesComposite.setBackground(parent.getDisplay().getSystemColor(
+				SWT.COLOR_GRAY));
 
 		slidesComposite.addPaintListener(new PaintListener() {
 
