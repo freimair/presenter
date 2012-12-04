@@ -7,6 +7,8 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -194,6 +196,14 @@ public class PresenterControl extends ApplicationWindow {
 	          }
 	        }
 	      });
+
+	    getShell().addDisposeListener(new DisposeListener() {
+
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				window.close();
+			}
+		});
 
 		parent.layout();
 		refreshImage();
