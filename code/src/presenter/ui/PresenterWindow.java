@@ -30,9 +30,9 @@ public class PresenterWindow extends ApplicationWindow {
 
 	private Canvas canvas;
 	private Image image;
-	private int x = 50, y = 50, width = 100, height = 100;
 	private boolean goTracker = false;
 	private PresenterControl parentWindow;
+	private double x = 0, y = 0, width = 1, height = 1;
 	
 	protected PresenterWindow(PresenterControl controlWindow) {
 		super(null);
@@ -66,8 +66,10 @@ public class PresenterWindow extends ApplicationWindow {
 	}
 
 	public void refreshLayout() {
-		canvas.setBounds((int)((100.0-width)*x/10000.0*getShell().getClientArea().width), (int)((100.0-height)*y/10000.0*getShell().getClientArea().height), (int)(getShell().getClientArea().width*width/100.0), (int)(getShell().getClientArea().height*height/100.0));
-		canvas.redraw();
+		canvas.setBounds((int) (getShell().getBounds().width * x),
+				(int) (getShell().getBounds().height * y), (int) (getShell()
+						.getBounds().width * width), (int) (getShell()
+						.getBounds().height * height));
 		canvas.update();
 	}
 
@@ -143,6 +145,7 @@ public class PresenterWindow extends ApplicationWindow {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				goTracker = true;
+				canvas.setVisible(false);
 			}
 
 			@Override
@@ -194,7 +197,7 @@ public class PresenterWindow extends ApplicationWindow {
 			}
 		});
 	    
-	    canvas.addMouseListener(new MouseListener() {
+		canvas.getParent().addMouseListener(new MouseListener() {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				// TODO Auto-generated method stub
@@ -204,16 +207,23 @@ public class PresenterWindow extends ApplicationWindow {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				if(goTracker) {
-					Tracker tracker = new Tracker(canvas, SWT.RESIZE);
+					Tracker tracker = new Tracker(canvas.getParent(),
+							SWT.RESIZE);
 					tracker.setRectangles(new Rectangle[] { new Rectangle(e.x, e.y,
 							1, 1), });
 					tracker.open();
 					goTracker = false;
 					Rectangle result = tracker.getRectangles()[0];
-					x = (int) ((double) (result.x + result.width/2) / canvas.getBounds().width * 100);
-					y = (int) ((double) (result.y + result.height/2) / canvas.getBounds().height * 100);
-					width = (int) ((double) result.width / canvas.getBounds().width * 100);
-					height = (int) ((double) result.height / canvas.getBounds().height * 100);
+
+					x = (double) result.x / getShell().getBounds().width;
+					y = (double) result.y / getShell().getBounds().height;
+
+					width = (double) result.width
+							/ getShell().getBounds().width;
+					height = (double) result.height
+							/ getShell().getBounds().height;
+
+					canvas.setVisible(true);
 					refreshLayout();
 				}
 			}
