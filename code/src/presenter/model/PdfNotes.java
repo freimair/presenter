@@ -30,6 +30,8 @@ public class PdfNotes extends Notes {
 			try {
 				PdfDecoder decoder = new PdfDecoder();
 				decoder.openPdfFile(path.getAbsolutePath());
+				decoder.setPageParameters(10, pageNumber);
+				decoder.useHiResScreenDisplay(true);
 
 				return new Image(Display.getCurrent(),
 						SWTUtils.convertToSWT(decoder

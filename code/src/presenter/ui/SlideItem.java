@@ -120,6 +120,8 @@ public class SlideItem extends Composite {
 			public void paintControl(PaintEvent e) {
 				GC gc = e.gc;
 				Image image = (Image) mySlide.getContent();
+				gc.setAntialias(SWT.ON);
+				gc.setInterpolation(SWT.HIGH);
 				gc.drawImage(image, 0, 0, image.getBounds().width,
 						image.getBounds().height, 0, 0,
 						slideCanvas.getBounds().width,
@@ -141,6 +143,8 @@ public class SlideItem extends Composite {
 				} catch (NullPointerException ex) {
 					image = (Image) mySlide.getContent();
 				}
+				gc.setAntialias(SWT.ON);
+				gc.setInterpolation(SWT.HIGH);
 				gc.drawImage(image, 0, 0, image.getBounds().width,
 						image.getBounds().height, 0, 0,
 						slideCanvas.getBounds().width,
