@@ -2,17 +2,16 @@ package presenter.ui;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
@@ -40,31 +39,6 @@ public class PresenterWindow extends ApplicationWindow {
 		parentWindow = controlWindow;
 	}
 	
-	public int getXOffset() {
-		return x;
-	}
-	
-	public int getYOffset() {
-		return y;
-	}
-	
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setLayout(int xoffset, int yoffset, int width, int height)
-	{
-		x = xoffset;
-		y = yoffset;
-		this.width = width;
-		this.height = height;
-		refreshLayout();
-	}
-
 	public void refreshLayout() {
 		canvas.setBounds((int) (getShell().getBounds().width * x),
 				(int) (getShell().getBounds().height * y), (int) (getShell()
@@ -86,27 +60,26 @@ public class PresenterWindow extends ApplicationWindow {
 	protected Control createContents(Composite parent) {
 	    getShell().setText("Präsentation");
 	    getShell().setSize(500, 500);
-	    getShell().setBackground(new Color(getShell().getDisplay(), 0, 0, 0));
-	    parent.setLayout(null);
+		getShell()
+				.setBackground(new Color(getShell().getDisplay(), 50, 50, 50));
+
+		// get rid of the ugly gray line at the top left
+		for (Control current : getShell().getChildren())
+			current.dispose();
+
+		parent.setLayout(null);
 	    
 	    // canvas neu einpassen wenn sich fenstergröße geändert hat
-		getShell().addControlListener(new ControlListener() {
+		getShell().addControlListener(new ControlAdapter() {
 			
 			@Override
 			public void controlResized(ControlEvent e) {
 				refreshLayout();
 			}
-			
-			@Override
-			public void controlMoved(ControlEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
 		});
 
-	    canvas = new Canvas(parent, SWT.NONE);
-	    this.setLayout(0, 0, 100, 100);
-	    canvas.setBackground(new Color(getShell().getDisplay(), 200, 200, 200));
+		canvas = new Canvas(parent, SWT.NONE);
+		canvas.setBackground(new Color(getShell().getDisplay(), 50, 50, 50));
 
 	    canvas.addPaintListener(new PaintListener() {
 	      public void paintControl(PaintEvent e) {
@@ -140,18 +113,12 @@ public class PresenterWindow extends ApplicationWindow {
 	    Menu contextMenu = new Menu(parent);
 	    MenuItem item1 = new MenuItem(contextMenu, SWT.PUSH);
 	    item1.setText("edit Boundingbox");
-	    item1.addSelectionListener(new SelectionListener() {
+		item1.addSelectionListener(new SelectionAdapter() {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				goTracker = true;
 				canvas.setVisible(false);
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 	    
@@ -162,11 +129,14 @@ public class PresenterWindow extends ApplicationWindow {
 			public void widgetSelected(SelectionEvent e) {
 				ColorDialog cd = new ColorDialog(getShell());
 				cd.setText("Select Color");
+				cd.setRGB(canvas.getBackground().getRGB());
 				RGB newColor = cd.open();
 				if (newColor == null) {
 				   return;
 				}
 				canvas.setBackground(new Color(getShell().getDisplay(), newColor));
+				canvas.getParent().setBackground(
+						new Color(getShell().getDisplay(), newColor));
 			}
 		});
 	    MenuItem item3 = new MenuItem(contextMenu, SWT.PUSH);
@@ -178,32 +148,8 @@ public class PresenterWindow extends ApplicationWindow {
 	    	}
 		});
 	    
-	    parent.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseDown(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				toggleFullscreen();
-			}
-		});
-	    
-		canvas.getParent().addMouseListener(new MouseListener() {
-			@Override
-			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
+		canvas.getParent().addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mouseDown(MouseEvent e) {
 				if(goTracker) {
@@ -227,11 +173,6 @@ public class PresenterWindow extends ApplicationWindow {
 					refreshLayout();
 				}
 			}
-
-			@Override
-			public void mouseDoubleClick(MouseEvent e) {
-				toggleFullscreen();	
-			}
 		});
 
 	    // Das Kontextmenü der Liste "bekannt machen"
@@ -245,6 +186,8 @@ public class PresenterWindow extends ApplicationWindow {
 				parentWindow.close();
 			}
 		});
+
+		canvas.layout();
 
 		return canvas;
 	}
