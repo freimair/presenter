@@ -33,7 +33,7 @@ public class PdfNotes extends Notes {
 				decoder.setPageParameters(10, pageNumber);
 				decoder.useHiResScreenDisplay(true);
 
-				return new Image(Display.getCurrent(),
+				content = new Image(Display.getCurrent(),
 						SWTUtils.convertToSWT(decoder
 								.getPageAsImage(pageNumber)));
 			} catch (PdfException e) {
