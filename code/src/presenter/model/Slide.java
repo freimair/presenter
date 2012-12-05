@@ -26,7 +26,12 @@ public abstract class Slide extends Displayable {
 
 	protected Notes notes;
 
-	public Notes getNotes() {
+	/**
+	 * @return the {@link Notes} if existing, the {@link Slide} if not
+	 */
+	public Displayable getNotes() {
+		if (null == notes)
+			return this;
 		return notes;
 	}
 

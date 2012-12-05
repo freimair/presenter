@@ -24,17 +24,9 @@ public class NotesTool extends Tool {
 		notesCanvas.addPaintListener(new PaintListener() {
 
 			public void paintControl(PaintEvent e) {
-				ScaledImage notes;
-				try {
-					notes = new ScaledImage((Image) Presentation
+				ScaledImage notes = new ScaledImage((Image) Presentation
 							.getCurrent().getNotes().getContent(), notesCanvas
 							.getBounds().width, notesCanvas.getBounds().height);
-				} catch (NullPointerException ex) {
-					notes = new ScaledImage((Image) Presentation
-							.getCurrent().getContent(),
-							notesCanvas.getBounds().width, notesCanvas
-									.getBounds().height);
-				}
 
 				e.gc.setAdvanced(true);
 				e.gc.setAntialias(SWT.ON);

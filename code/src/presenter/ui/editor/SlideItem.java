@@ -186,12 +186,7 @@ public class SlideItem extends Composite {
 
 			@Override
 			public void run() {
-				Image src;
-				try {
-					src = (Image) mySlide.getNotes().getContent();
-				} catch (NullPointerException ex) {
-					src = (Image) mySlide.getContent();
-				}
+				Image src = (Image) mySlide.getNotes().getContent();
 
 				Point dimensions = resize(src.getBounds(),
 						notesLabel.getBounds());
