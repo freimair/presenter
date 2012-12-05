@@ -145,11 +145,15 @@ public class EditDialog extends ApplicationWindow {
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-				try {
-					Presentation.save(new File(dialog.open()));
-				} catch (NullPointerException e) {
-					// user pressed cancel
-				}
+				dialog.setFilterExtensions(new String[] { ".presentation" });
+				String result = dialog.open();
+				if (null == result)
+					return; // cancelled
+
+				if (!result.endsWith(".presentation"))
+					result += ".presentation";
+
+				Presentation.save(new File(result));
 			}
 		});
 
