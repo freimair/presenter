@@ -1,8 +1,17 @@
 package presenter.model;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+
+import presenter.Presenter;
 
 
 public class Presentation {
@@ -20,7 +29,23 @@ public class Presentation {
 	}
 
 	public static void save(File file) {
-		System.out.println("save to " + file.getAbsolutePath());
+		Document document = new Document(new Element(
+				Presenter.class.getSimpleName()));
+			Element root = document.getRootElement();
+			for (Slide currentSlide : instance.slides)
+				root.addContent(currentSlide.save());
+
+		try {
+			System.out.println("save to " + file.getAbsolutePath());
+			file.delete();
+			// file.createNewFile();
+			XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
+			out.output(root, new FileWriter(file));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public static void create() {

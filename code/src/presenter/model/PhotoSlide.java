@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
+import org.jdom.Element;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
@@ -17,14 +18,18 @@ import com.drew.metadata.exif.ExifIFD0Directory;
 
 public class PhotoSlide extends Slide {
 
-	public PhotoSlide(File file) {
+	private File photoFile;
 
-		Image input = new Image(Display.getCurrent(), file.getAbsolutePath());
+	public PhotoSlide(File file) {
+		photoFile = file;
+
+		Image input = new Image(Display.getCurrent(),
+				photoFile.getAbsolutePath());
 
 		// go check if we have to rotate it
 		Image result = null;
         try {
-			Metadata metaData = ImageMetadataReader.readMetadata(file);
+			Metadata metaData = ImageMetadataReader.readMetadata(photoFile);
 			if (metaData.containsDirectory(ExifIFD0Directory.class)) {
 				int angle = 0;
 				switch (metaData
@@ -77,5 +82,10 @@ public class PhotoSlide extends Slide {
 
 	public Class<Image> getContentType() {
 		return Image.class;
+	}
+
+	@Override
+	public void saveContent(Element contentNode) {
+		contentNode.addContent(photoFile.getAbsolutePath());
 	}
 }

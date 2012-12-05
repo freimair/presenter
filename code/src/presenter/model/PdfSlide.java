@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.jdom.Element;
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 
@@ -12,7 +13,7 @@ import presenter.ui.SWTUtils;
 public class PdfSlide extends Slide {
 
 	private File path = null;
-	private int pageNumber = 1;
+	private Integer pageNumber = 1;
 
 	public PdfSlide(File path, int page) {
 		this.path = path;
@@ -45,6 +46,12 @@ public class PdfSlide extends Slide {
 			}
 		}
 		return content;
+	}
+
+	@Override
+	public void saveContent(Element contentNode) {
+		contentNode.addContent(path.getAbsolutePath());
+		contentNode.setAttribute("page", pageNumber.toString());
 	}
 
 }

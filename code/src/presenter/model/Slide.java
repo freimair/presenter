@@ -2,10 +2,11 @@ package presenter.model;
 
 import java.io.File;
 
+import org.jdom.Element;
 
 public abstract class Slide extends Displayable {
 
-	private Notes notes;
+	protected Notes notes;
 
 	// public Slide(Element element) {
 	// setImage(element.getChildText("content"));
@@ -25,4 +26,19 @@ public abstract class Slide extends Displayable {
 
 	}
 
+	public Element save() {
+		Element result = new Element("slide");
+		result.setAttribute("type", this.getClass().getSimpleName());
+
+		Element xmlContent = new Element("content");
+		result.addContent(xmlContent);
+		saveContent(xmlContent);
+
+		if (null != notes)
+			result.addContent(notes.save());
+
+		return result;
+	}
+
+	protected abstract void saveContent(Element contentNode);
 }

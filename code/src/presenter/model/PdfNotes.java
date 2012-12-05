@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.jdom.Element;
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 
@@ -12,7 +13,7 @@ import presenter.ui.SWTUtils;
 public class PdfNotes extends Notes {
 
 	private File path;
-	private int pageNumber;
+	private Integer pageNumber;
 
 	public PdfNotes(File file, int page) {
 		path = file;
@@ -45,5 +46,11 @@ public class PdfNotes extends Notes {
 			}
 		}
 		return content;
+	}
+
+	@Override
+	public void save(Element notesNode) {
+		notesNode.addContent(path.getAbsolutePath());
+		notesNode.setAttribute("page", pageNumber.toString());
 	}
 }
