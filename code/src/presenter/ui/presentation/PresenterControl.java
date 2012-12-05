@@ -51,6 +51,7 @@ public class PresenterControl extends ApplicationWindow {
 		Composite container = (Composite) super.createContents(parent);
 		container.setLayout(new GridLayout(2, false));
 
+		tools.add(new SlidesTool(container, SWT.BORDER, this));
 		tools.add(new NotesTool(container, SWT.BORDER, this));
 	    
 		Composite controlsComposite = new Composite(container, SWT.NONE);
