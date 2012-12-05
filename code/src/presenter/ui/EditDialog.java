@@ -138,6 +138,21 @@ public class EditDialog extends ApplicationWindow {
 			}
 		});
 
+		ToolItem saveButton = new ToolItem(toolbar, SWT.PUSH);
+		saveButton.setText("Save");
+		saveButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+				try {
+					Presentation.save(new File(dialog.open()));
+				} catch (NullPointerException e) {
+					// user pressed cancel
+				}
+			}
+		});
+
 		ToolItem exitButton = new ToolItem(toolbar, SWT.PUSH);
 		exitButton.setText("Exit");
 		exitButton.addSelectionListener(new SelectionAdapter() {

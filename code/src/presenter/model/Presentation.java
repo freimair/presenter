@@ -1,5 +1,6 @@
 package presenter.model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,10 @@ public class Presentation {
 
 	public static void open(String path) {
 		getInstance();
+	}
+
+	public static void save(File file) {
+		System.out.println("save to " + file.getAbsolutePath());
 	}
 
 	public static void create() {
