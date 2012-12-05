@@ -1,4 +1,4 @@
-package presenter.ui;
+package presenter.ui.presentation;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;

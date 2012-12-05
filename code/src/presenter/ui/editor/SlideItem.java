@@ -1,4 +1,4 @@
-package presenter.ui;
+package presenter.ui.editor;
 import java.io.File;
 
 import org.eclipse.jface.dialogs.InputDialog;

@@ -1,4 +1,4 @@
-package presenter.ui;
+package presenter.ui.editor;
 
 import java.io.File;
 
@@ -25,6 +25,8 @@ import org.eclipse.swt.widgets.ToolItem;
 import presenter.Settings;
 import presenter.model.Presentation;
 import presenter.model.Slide;
+import presenter.ui.OpenDialog;
+import presenter.ui.presentation.PresenterControl;
 
 
 public class EditDialog extends ApplicationWindow {

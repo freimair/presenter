@@ -1,4 +1,4 @@
-package presenter.ui;
+package presenter.ui.presentation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
