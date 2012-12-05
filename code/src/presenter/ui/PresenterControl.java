@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ProgressBar;
 
 import presenter.model.Presentation;
 
@@ -38,6 +39,8 @@ public class PresenterControl extends ApplicationWindow {
 	private Canvas thumbnailCanvas;
 	private Canvas notesCanvas;
     private ScaledImage thumbnail, notes;
+	private ProgressBar progressBar;
+	private Label progressLabel;
 
 	
 	public PresenterControl() {
@@ -61,6 +64,12 @@ public class PresenterControl extends ApplicationWindow {
 			this.setImage((Image) Presentation.getCurrent().getContent());
 			this.setNotes((Image) Presentation.getCurrent().getContent());
 		}
+
+		int totalSlides = Presentation.getSlides().size();
+		int currentSlide = Presentation.getSlides().indexOf(Presentation.getCurrent()) + 1;
+
+		progressBar.setSelection(currentSlide - 1);
+		progressLabel.setText(currentSlide + "/" + totalSlides);
 	}
 	
 	public void setImage(Image thumbnail) {
@@ -196,6 +205,23 @@ public class PresenterControl extends ApplicationWindow {
 	          }
 	        }
 	      });
+
+		Composite progressComposite = new Composite(controlsComposite,
+				SWT.BORDER);
+		progressComposite.setLayout(new GridLayout(2, false));
+		int totalSlides = Presentation.getSlides().size() - 1;
+
+		progressBar = new ProgressBar(progressComposite, SWT.NONE);
+		progressBar.setMaximum(totalSlides);
+
+		progressLabel = new Label(progressComposite, SWT.RIGHT);
+		progressLabel.setFont(new Font(Display.getCurrent(), newFontData));
+
+		// set fixed width
+		progressLabel.setText(totalSlides + "/" + totalSlides);
+		progressComposite.layout();
+		progressLabel.setLayoutData(new GridData(
+				progressLabel.getBounds().width, SWT.DEFAULT));
 
 	    getShell().addDisposeListener(new DisposeListener() {
 
