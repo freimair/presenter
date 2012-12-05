@@ -52,12 +52,11 @@ public class PresenterControl extends ApplicationWindow {
 		container.setLayout(new GridLayout(2, false));
 
 		tools.add(new NotesTool(container, SWT.BORDER, this));
-		tools.add(new SlidesTool(container, SWT.BORDER, this));
 	    
 		Composite controlsComposite = new Composite(container, SWT.NONE);
 		controlsComposite.setLayout(new RowLayout(SWT.VERTICAL));
 
-
+		tools.add(new CurrentSlideTool(controlsComposite, SWT.BORDER, this));
 		tools.add(new NavigationTool(controlsComposite, SWT.NONE, this));
 		tools.add(new TimerTool(controlsComposite, SWT.BORDER, this));
 		tools.add(new ProgressTool(controlsComposite, SWT.BORDER, this));

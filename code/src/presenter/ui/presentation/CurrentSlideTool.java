@@ -9,11 +9,11 @@ import org.eclipse.swt.widgets.Composite;
 
 import presenter.model.Presentation;
 
-public class SlidesTool extends Tool {
+public class CurrentSlideTool extends Tool {
 
 	private Canvas thumbnailCanvas;
 
-	public SlidesTool(Composite parent, int style, PresenterControl control) {
+	public CurrentSlideTool(Composite parent, int style, PresenterControl control) {
 		super(parent, style, control);
 		thumbnailCanvas = new Canvas(this, SWT.NONE);
 		thumbnailCanvas.setBounds(0, 0, 200, 200);
