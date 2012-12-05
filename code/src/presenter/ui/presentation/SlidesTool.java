@@ -2,10 +2,13 @@ package presenter.ui.presentation;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.ControlAdapter;
+import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -49,6 +52,13 @@ public class SlidesTool extends Tool {
 			}
 		});
 
+		contentComposite.addControlListener(new ControlAdapter() {
+
+			@Override
+			public void controlResized(ControlEvent e) {
+				update();
+			}
+		});
 		update();
 	}
 
@@ -58,10 +68,21 @@ public class SlidesTool extends Tool {
 		for (Control current : contentComposite.getChildren())
 			current.dispose();
 
-		Canvas current = null;
 		// refill
+		// - add dummy
+		Canvas dummy = new Canvas(contentComposite, SWT.NONE);
+		dummy.setLayoutData(new RowData(contentComposite.getParent()
+				.getBounds().width / 2 - 95, SWT.DEFAULT));
+
+		// - add slides
+		Canvas current = null;
 		for (final Slide currentSlide : Presentation.getSlides()) {
-			final Canvas container = new Canvas(contentComposite, SWT.BORDER);
+			int style;
+			if (currentSlide.equals(Presentation.getCurrent()))
+				style = SWT.NONE;
+			else
+				style = SWT.TRANSPARENT;
+			final Canvas container = new Canvas(contentComposite, style);
 			container.addPaintListener(new PaintListener() {
 
 				public void paintControl(PaintEvent e) {
@@ -91,6 +112,7 @@ public class SlidesTool extends Tool {
 
 			if (currentSlide.equals(Presentation.getCurrent())) {
 				container.setLayoutData(new RowData(190, 190));
+				container.setBackground(new Color(getDisplay(), 150, 255, 150));
 				current = container;
 			} else
 				container.setLayoutData(new RowData(150, 150));
@@ -98,8 +120,18 @@ public class SlidesTool extends Tool {
 			container.redraw();
 		}
 
+		// - add dummy
+		dummy = new Canvas(contentComposite, SWT.NONE);
+		dummy.setLayoutData(new RowData(contentComposite.getParent()
+				.getBounds().width / 2 - 95, SWT.DEFAULT));
+
 		contentComposite.layout();
-		((ScrolledComposite) contentComposite.getParent()).showControl(current);
+
+		((ScrolledComposite) contentComposite.getParent()).setOrigin(
+				current.getLocation().x
+						- contentComposite.getParent().getBounds().width / 2
+						+ 95, 0);
+		contentComposite.getParent().layout();
 	}
 
 }
