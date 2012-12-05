@@ -11,8 +11,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Canvas;
@@ -27,8 +25,7 @@ public class PresenterControl extends ApplicationWindow {
 	int current = 0;
 	private PresenterWindow window;
 	private Canvas thumbnailCanvas;
-	private Canvas notesCanvas;
-    private ScaledImage thumbnail, notes;
+	private ScaledImage thumbnail;
 	private List<Tool> tools = new ArrayList<Tool>();
 
 	
@@ -45,13 +42,10 @@ public class PresenterControl extends ApplicationWindow {
 	public void update() {
 		window.setImage((Image) Presentation.getCurrent().getContent());
 		try {
-			this.setNotes((Image) Presentation.getCurrent().getNotes()
-					.getContent());
 			this.setImage((Image) Presentation.getCurrent().getContent());
 
 		} catch (NullPointerException e) {
 			this.setImage((Image) Presentation.getCurrent().getContent());
-			this.setNotes((Image) Presentation.getCurrent().getContent());
 		}
 
 		for (Tool current : tools)
@@ -64,12 +58,6 @@ public class PresenterControl extends ApplicationWindow {
 		this.thumbnailCanvas.update();
 	}
 	
-	public void setNotes(Image notes) {
-		this.notes = new ScaledImage(notes, notesCanvas.getBounds().width, notesCanvas.getBounds().height);
-		this.notesCanvas.redraw();
-		this.notesCanvas.update();
-	}
-	
 	protected Control createContents(Composite parent) {
 	    getShell().setText("Presenter");
 		getShell().setSize(1000, 700);
@@ -80,18 +68,7 @@ public class PresenterControl extends ApplicationWindow {
 		Composite container = (Composite) super.createContents(parent);
 		container.setLayout(new GridLayout(2, false));
 
-		Composite slidenotes = new Composite(container, SWT.BORDER);
-		slidenotes.setLayout(new FillLayout());
-		slidenotes.setLayoutData(new GridData(GridData.FILL_BOTH));
-	    notesCanvas = new Canvas(slidenotes, SWT.NONE);
-	    notesCanvas.addPaintListener(new PaintListener() {
-
-			public void paintControl(PaintEvent e) {
-		        if(null != notes) {		        	
-		        	e.gc.drawImage(notes.getImage(), notes.centerX(notesCanvas.getBounds().width), notes.centerY(notesCanvas.getBounds().height));
-		        }
-		      }
-		    });
+		tools.add(new NotesTool(container, SWT.BORDER, this));
 	    
 		Composite controlsComposite = new Composite(container, SWT.NONE);
 		controlsComposite.setLayout(new RowLayout(SWT.VERTICAL));
