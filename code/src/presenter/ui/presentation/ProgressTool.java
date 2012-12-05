@@ -17,8 +17,8 @@ public class ProgressTool extends Tool {
 	private ProgressBar progressBar;
 	private Label progressLabel;
 
-	public ProgressTool(Composite parent, int style) {
-		super(parent, style);
+	public ProgressTool(Composite parent, int style, PresenterControl control) {
+		super(parent, style, control);
 
 		this.setLayout(new GridLayout(2, false));
 		int totalSlides = Presentation.getSlides().size() - 1;

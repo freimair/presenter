@@ -9,15 +9,12 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -110,33 +107,10 @@ public class PresenterControl extends ApplicationWindow {
 		        }
 		      }
 		    });
-	    
-		Composite slidecontrol = new Composite(controlsComposite, SWT.BORDER);
-	    slidecontrol.setLayout(new RowLayout(SWT.HORIZONTAL));
-	    Button buttonprev = new Button(slidecontrol, SWT.PUSH);
-	    buttonprev.setText("prev");
-	    buttonprev.addSelectionListener(new SelectionAdapter() {
-			
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Presentation.previous();
-				update();
-			}
-		});
-	    
-	    Button buttonnext = new Button(slidecontrol, SWT.PUSH);
-	    buttonnext.setText("next");
-	    buttonnext.addSelectionListener(new SelectionAdapter() {
-			
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Presentation.next();
-				update();
-			}
-		});
-	    
-		tools.add(new TimerTool(controlsComposite, SWT.BORDER));
-		tools.add(new ProgressTool(controlsComposite, SWT.BORDER));
+
+		tools.add(new NavigationTool(controlsComposite, SWT.NONE, this));
+		tools.add(new TimerTool(controlsComposite, SWT.BORDER, this));
+		tools.add(new ProgressTool(controlsComposite, SWT.BORDER, this));
 
 
 

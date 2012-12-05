@@ -20,8 +20,8 @@ import org.eclipse.swt.widgets.Label;
 public class TimerTool extends Tool {
 	private Label timerLabel;
 
-	public TimerTool(Composite parent, int style) {
-		super(parent, style);
+	public TimerTool(Composite parent, int style, PresenterControl control) {
+		super(parent, style, control);
 		this.setLayout(new GridLayout(3, true));
 
 		timerLabel = new Label(this, SWT.NONE);

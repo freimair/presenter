@@ -4,9 +4,15 @@ import org.eclipse.swt.widgets.Composite;
 
 public abstract class Tool extends Composite {
 
-	public Tool(Composite parent, int style) {
+	protected PresenterControl myControl;
+
+	public Tool(Composite parent, int style, PresenterControl control) {
 		super(parent, style);
-		// TODO Auto-generated constructor stub
+		myControl = control;
+	}
+
+	public PresenterControl getControl() {
+		return myControl;
 	}
 
 	public abstract void update();
