@@ -2,6 +2,8 @@ package presenter.ui.presentation;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
@@ -78,6 +80,15 @@ public class SlidesTool extends Tool {
 				}
 			});
 			
+			container.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseDown(MouseEvent e) {
+					Presentation.moveTo(currentSlide);
+					getControl().update();
+				}
+			});
+
 			if (currentSlide.equals(Presentation.getCurrent())) {
 				container.setLayoutData(new RowData(190, 190));
 				current = container;

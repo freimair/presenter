@@ -68,6 +68,10 @@ public class Presentation {
 		return get(--instance.index);
 	}
 
+	public static void moveTo(Slide slide) {
+		instance.index = instance.slides.indexOf(slide);
+	}
+
 	public static Slide get(int index) {
 		index = (index % instance.slides.size() + instance.slides.size())
 				% instance.slides.size();
