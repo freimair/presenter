@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.ProgressBar;
 
 import presenter.model.Presentation;
 
-public class ProgressTool extends Composite {
+public class ProgressTool extends Tool {
 
 	private ProgressBar progressBar;
 	private Label progressLabel;

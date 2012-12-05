@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
-public class TimerTool extends Composite {
+public class TimerTool extends Tool {
 	private Label timerLabel;
 
 	public TimerTool(Composite parent, int style) {
@@ -137,5 +137,11 @@ public class TimerTool extends Composite {
 			active = true;
 			run();
 		}
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+
 	};
 }

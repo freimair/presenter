@@ -1,5 +1,8 @@
 package presenter.ui.presentation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -29,7 +32,7 @@ public class PresenterControl extends ApplicationWindow {
 	private Canvas thumbnailCanvas;
 	private Canvas notesCanvas;
     private ScaledImage thumbnail, notes;
-	private ProgressTool progressTool;
+	private List<Tool> tools = new ArrayList<Tool>();
 
 	
 	public PresenterControl() {
@@ -42,7 +45,7 @@ public class PresenterControl extends ApplicationWindow {
 		getShell().setFullScreen(!getShell().getFullScreen());
 	}
 	
-	public void refreshImage() {
+	public void update() {
 		window.setImage((Image) Presentation.getCurrent().getContent());
 		try {
 			this.setNotes((Image) Presentation.getCurrent().getNotes()
@@ -54,7 +57,8 @@ public class PresenterControl extends ApplicationWindow {
 			this.setNotes((Image) Presentation.getCurrent().getContent());
 		}
 
-		progressTool.update();
+		for (Tool current : tools)
+			current.update();
 	}
 	
 	public void setImage(Image thumbnail) {
@@ -116,7 +120,7 @@ public class PresenterControl extends ApplicationWindow {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Presentation.previous();
-				refreshImage();
+				update();
 			}
 		});
 	    
@@ -127,13 +131,12 @@ public class PresenterControl extends ApplicationWindow {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Presentation.next();
-				refreshImage();
+				update();
 			}
 		});
 	    
-		new TimerTool(controlsComposite, SWT.BORDER);
-
-		progressTool = new ProgressTool(controlsComposite, SWT.BORDER);
+		tools.add(new TimerTool(controlsComposite, SWT.BORDER));
+		tools.add(new ProgressTool(controlsComposite, SWT.BORDER));
 
 
 
@@ -146,7 +149,7 @@ public class PresenterControl extends ApplicationWindow {
 		});
 
 		parent.layout();
-		refreshImage();
+		update();
 
 		return container;
 	}
