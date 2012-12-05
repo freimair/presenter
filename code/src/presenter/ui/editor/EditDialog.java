@@ -170,6 +170,7 @@ public class EditDialog extends ApplicationWindow {
 			public void widgetSelected(SelectionEvent arg0) {
 				Dialog dialog = new OpenDialog(getShell());
 				dialog.open();
+				update();
 			}
 		});
 
