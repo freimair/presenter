@@ -40,7 +40,7 @@ public class EditDialog extends ApplicationWindow {
 
 	@Override
 	protected Control createContents(Composite parent) {
-		getShell().setSize(1000, 700);
+		getShell().setSize(1050, 700);
 		Composite container = (Composite) super.createContents(parent);
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 		container.setLayout(new FillLayout());

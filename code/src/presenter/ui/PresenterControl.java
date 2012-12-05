@@ -86,6 +86,7 @@ public class PresenterControl extends ApplicationWindow {
 	
 	protected Control createContents(Composite parent) {
 	    getShell().setText("Presenter");
+		getShell().setSize(1000, 700);
 
 		window = new PresenterWindow(this);
 		window.open();
