@@ -7,7 +7,6 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Canvas;
@@ -23,7 +22,6 @@ public class SlidesTool extends Tool {
 
 	public SlidesTool(Composite parent, int style, PresenterControl control) {
 		super(parent, style, control);
-		this.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		this.setLayout(new FillLayout());
 		ScrolledComposite scrolledContentComposite = new ScrolledComposite(
 				this, SWT.H_SCROLL);
@@ -32,7 +30,10 @@ public class SlidesTool extends Tool {
 		scrolledContentComposite.setContent(contentComposite);
 		scrolledContentComposite.setExpandHorizontal(true);
 		scrolledContentComposite.setExpandVertical(true);
-		contentComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
+		RowLayout layout = new RowLayout(SWT.HORIZONTAL);
+		layout.center = true;
+		layout.wrap = false;
+		contentComposite.setLayout(layout);
 
 		parent.addPaintListener(new PaintListener() {
 
@@ -55,6 +56,7 @@ public class SlidesTool extends Tool {
 		for (Control current : contentComposite.getChildren())
 			current.dispose();
 
+		Canvas current = null;
 		// refill
 		for (final Slide currentSlide : Presentation.getSlides()) {
 			final Canvas container = new Canvas(contentComposite, SWT.BORDER);
@@ -78,14 +80,15 @@ public class SlidesTool extends Tool {
 			
 			if (currentSlide.equals(Presentation.getCurrent())) {
 				container.setLayoutData(new RowData(190, 190));
-				// TODO make sure this item is placed in the exact center of the
-				// composite
+				current = container;
 			} else
 				container.setLayoutData(new RowData(150, 150));
 
 			container.redraw();
 		}
+
 		contentComposite.layout();
+		((ScrolledComposite) contentComposite.getParent()).showControl(current);
 	}
 
 }

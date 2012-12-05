@@ -9,6 +9,7 @@ import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -51,7 +52,11 @@ public class PresenterControl extends ApplicationWindow {
 		Composite container = (Composite) super.createContents(parent);
 		container.setLayout(new GridLayout(2, false));
 
-		tools.add(new SlidesTool(container, SWT.BORDER, this));
+		SlidesTool tool = new SlidesTool(container, SWT.BORDER, this);
+		GridData layoutData = new GridData(GridData.FILL_HORIZONTAL);
+		layoutData.horizontalSpan = 2;
+		tool.setLayoutData(layoutData);
+		tools.add(tool);
 		tools.add(new NotesTool(container, SWT.BORDER, this));
 	    
 		Composite controlsComposite = new Composite(container, SWT.NONE);
