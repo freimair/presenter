@@ -61,7 +61,7 @@ public class OpenDialog extends TitleAreaDialog implements Runnable {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-				dialog.setFilterExtensions(new String[] { ".xml" });
+				dialog.setFilterExtensions(new String[] { "*.presentation" });
 				try {
 					workspaceCombo.add(dialog.open(), 0);
 					workspaceCombo.select(0);

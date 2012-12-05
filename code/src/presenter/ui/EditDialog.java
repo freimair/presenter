@@ -2,6 +2,7 @@ package presenter.ui;
 
 import java.io.File;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -21,6 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
+import presenter.Settings;
 import presenter.model.Presentation;
 import presenter.model.Slide;
 
@@ -155,6 +157,17 @@ public class EditDialog extends ApplicationWindow {
 
 				Presentation.save(new File(result));
 				Settings.setRecent(result);
+			}
+		});
+
+		ToolItem openButton = new ToolItem(toolbar, SWT.PUSH);
+		openButton.setText("Open");
+		openButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				Dialog dialog = new OpenDialog(getShell());
+				dialog.open();
 			}
 		});
 
