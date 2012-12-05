@@ -17,6 +17,10 @@ public class PdfSlide extends Slide {
 	private File path = null;
 	private Integer pageNumber = 1;
 
+	public PdfSlide() {
+		// essential for instantiating slides dynamically
+	}
+
 	public PdfSlide(File path, int page) {
 		this.path = path;
 		this.pageNumber = page;
@@ -54,6 +58,12 @@ public class PdfSlide extends Slide {
 	public void saveContent(Element contentNode, File base) throws IOException {
 		contentNode.addContent(FileUtils.getRelativePath(base, path));
 		contentNode.setAttribute("page", pageNumber.toString());
+	}
+
+	@Override
+	protected void loadContent(Element contentNode, File base) {
+		path = FileUtils.recreateAbsolutPath(base, contentNode.getText());
+		pageNumber = Integer.valueOf(contentNode.getAttributeValue("page"));
 	}
 
 }

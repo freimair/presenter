@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
@@ -25,7 +27,7 @@ public class Presentation {
 	}
 
 	public static void open(String path) {
-		getInstance();
+		instance = new Presentation(new File(path));
 	}
 
 	public static void save(File file) {
@@ -84,7 +86,31 @@ public class Presentation {
 	private List<Slide> slides;
 	private int index = 0;
 
+	/**
+	 * for creating an empty presentation from scratch.
+	 */
 	public Presentation() {
 		slides = new ArrayList<Slide>();
+	}
+
+	/**
+	 * For loading a given presentation from file.
+	 * 
+	 * @param file
+	 */
+	public Presentation(File file) {
+		SAXBuilder builder = new SAXBuilder();
+		try {
+			Element root = builder.build(file).getRootElement();
+			slides = new ArrayList<Slide>();
+			for (Object current : root.getChildren())
+				slides.add(Slide.create((Element) current, file.getParentFile()));
+		} catch (JDOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

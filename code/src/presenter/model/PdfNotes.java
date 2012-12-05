@@ -17,6 +17,10 @@ public class PdfNotes extends Notes {
 	private File path;
 	private Integer pageNumber;
 
+	public PdfNotes() {
+		// essential for instantiating notes dynamically
+	}
+
 	public PdfNotes(File file, int page) {
 		path = file;
 		pageNumber = page;
@@ -54,5 +58,11 @@ public class PdfNotes extends Notes {
 	public void save(Element notesNode, File base) throws IOException {
 		notesNode.addContent(FileUtils.getRelativePath(base, path));
 		notesNode.setAttribute("page", pageNumber.toString());
+	}
+
+	@Override
+	protected void load(Element notesNode, File base) {
+		path = FileUtils.recreateAbsolutPath(base, notesNode.getText());
+		pageNumber = Integer.valueOf(notesNode.getAttributeValue("page"));
 	}
 }

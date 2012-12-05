@@ -7,13 +7,24 @@ import org.jdom.Element;
 
 public abstract class Slide extends Displayable {
 
-	protected Notes notes;
+	// ############ STATICS ############
+	public static Slide create(Element current, File base) {
+		try {
+			Slide result = (Slide) Class.forName(
+					"presenter.model."
+							+ current.getAttribute("type").getValue())
+					.newInstance();
+			result.load(current, base);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-	// public Slide(Element element) {
-	// setImage(element.getChildText("content"));
-	// if (null != element.getChildText("notes"))
-	// notes = new Notes(element.getChildText("notes"));
-	// }
+	// ########## NON-STATICS ##########
+
+	protected Notes notes;
 
 	public Notes getNotes() {
 		return notes;
@@ -43,4 +54,14 @@ public abstract class Slide extends Displayable {
 
 	protected abstract void saveContent(Element contentNode, File base)
 			throws IOException;
+
+	public void load(Element slideNode, File base) {
+
+		loadContent(slideNode.getChild("content"), base);
+
+		if (null != slideNode.getChild("notes"))
+			notes = Notes.create(slideNode.getChild("notes"), base);
+	}
+
+	protected abstract void loadContent(Element contentNode, File base);
 }

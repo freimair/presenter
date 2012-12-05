@@ -22,20 +22,26 @@ public class PhotoSlide extends Slide {
 
 	private File photoFile;
 
+	public PhotoSlide() {
+		// essential for instantiating slides dynamically
+	}
+
 	public PhotoSlide(File file) {
 		photoFile = file;
-
+		setImage();
+	}
+	
+	private void setImage() {
 		Image input = new Image(Display.getCurrent(),
 				photoFile.getAbsolutePath());
 
 		// go check if we have to rotate it
 		Image result = null;
-        try {
+		try {
 			Metadata metaData = ImageMetadataReader.readMetadata(photoFile);
 			if (metaData.containsDirectory(ExifIFD0Directory.class)) {
 				int angle = 0;
-				switch (metaData
-						.getDirectory(ExifIFD0Directory.class).getInt(
+				switch (metaData.getDirectory(ExifIFD0Directory.class).getInt(
 						ExifIFD0Directory.TAG_ORIENTATION)) {
 				case 6:
 					angle = 90;
@@ -78,7 +84,7 @@ public class PhotoSlide extends Slide {
 			if (null == result)
 				result = input;
 		}
-        
+
 		setContent(result);
 	}
 
@@ -89,5 +95,11 @@ public class PhotoSlide extends Slide {
 	@Override
 	public void saveContent(Element contentNode, File base) throws IOException {
 		contentNode.addContent(FileUtils.getRelativePath(base, photoFile));
+	}
+
+	@Override
+	protected void loadContent(Element contentNode, File base) {
+		photoFile = FileUtils.recreateAbsolutPath(base, contentNode.getText());
+		setImage();
 	}
 }

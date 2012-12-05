@@ -37,4 +37,8 @@ public class FileUtils {
 		}
 	}
 
+	public static File recreateAbsolutPath(File base, String path) {
+		return new File(base.getAbsolutePath() + File.separatorChar + path);
+	}
+
 }
