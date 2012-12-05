@@ -1,6 +1,7 @@
 package presenter.model;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.jdom.Element;
 
@@ -26,19 +27,20 @@ public abstract class Slide extends Displayable {
 
 	}
 
-	public Element save() {
+	public Element save(File base) throws IOException {
 		Element result = new Element("slide");
 		result.setAttribute("type", this.getClass().getSimpleName());
 
 		Element xmlContent = new Element("content");
 		result.addContent(xmlContent);
-		saveContent(xmlContent);
+		saveContent(xmlContent, base);
 
 		if (null != notes)
-			result.addContent(notes.save());
+			result.addContent(notes.save(base));
 
 		return result;
 	}
 
-	protected abstract void saveContent(Element contentNode);
+	protected abstract void saveContent(Element contentNode, File base)
+			throws IOException;
 }

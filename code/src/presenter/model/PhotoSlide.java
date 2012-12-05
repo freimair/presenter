@@ -10,6 +10,8 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 import org.jdom.Element;
 
+import presenter.FileUtils;
+
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Metadata;
@@ -85,7 +87,7 @@ public class PhotoSlide extends Slide {
 	}
 
 	@Override
-	public void saveContent(Element contentNode) {
-		contentNode.addContent(photoFile.getAbsolutePath());
+	public void saveContent(Element contentNode, File base) throws IOException {
+		contentNode.addContent(FileUtils.getRelativePath(base, photoFile));
 	}
 }

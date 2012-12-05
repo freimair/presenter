@@ -31,14 +31,16 @@ public class Presentation {
 	public static void save(File file) {
 		Document document = new Document(new Element(
 				Presenter.class.getSimpleName()));
-			Element root = document.getRootElement();
-			for (Slide currentSlide : instance.slides)
-				root.addContent(currentSlide.save());
+		Element root = document.getRootElement();
+		for (Slide currentSlide : instance.slides)
+			try {
+				root.addContent(currentSlide.save(file.getParentFile()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 		try {
-			System.out.println("save to " + file.getAbsolutePath());
 			file.delete();
-			// file.createNewFile();
 			XMLOutputter out = new XMLOutputter(Format.getPrettyFormat());
 			out.output(root, new FileWriter(file));
 		} catch (IOException e) {

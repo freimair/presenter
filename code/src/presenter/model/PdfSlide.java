@@ -1,6 +1,7 @@
 package presenter.model;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
@@ -8,6 +9,7 @@ import org.jdom.Element;
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 
+import presenter.FileUtils;
 import presenter.ui.SWTUtils;
 
 public class PdfSlide extends Slide {
@@ -49,8 +51,8 @@ public class PdfSlide extends Slide {
 	}
 
 	@Override
-	public void saveContent(Element contentNode) {
-		contentNode.addContent(path.getAbsolutePath());
+	public void saveContent(Element contentNode, File base) throws IOException {
+		contentNode.addContent(FileUtils.getRelativePath(base, path));
 		contentNode.setAttribute("page", pageNumber.toString());
 	}
 
