@@ -1,4 +1,4 @@
-package presenter.ui.presentation;
+package presenter.ui.presentation.tools;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -10,6 +10,8 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
 import presenter.model.Presentation;
+import presenter.ui.presentation.PresenterControl;
+import presenter.ui.presentation.ScaledImage;
 
 public class NotesTool extends Tool {
 

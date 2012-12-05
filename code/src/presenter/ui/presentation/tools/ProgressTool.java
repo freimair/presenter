@@ -1,4 +1,4 @@
-package presenter.ui.presentation;
+package presenter.ui.presentation.tools;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 
 import presenter.model.Presentation;
+import presenter.ui.presentation.PresenterControl;
 
 public class ProgressTool extends Tool {
 

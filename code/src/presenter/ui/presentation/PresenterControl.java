@@ -16,6 +16,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import presenter.model.Presentation;
+import presenter.ui.presentation.tools.CurrentSlideTool;
+import presenter.ui.presentation.tools.NavigationTool;
+import presenter.ui.presentation.tools.NotesTool;
+import presenter.ui.presentation.tools.ProgressTool;
+import presenter.ui.presentation.tools.SlidesTool;
+import presenter.ui.presentation.tools.TimerTool;
+import presenter.ui.presentation.tools.Tool;
 
 
 public class PresenterControl extends ApplicationWindow {

@@ -1,4 +1,4 @@
-package presenter.ui.presentation;
+package presenter.ui.presentation.tools;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Control;
 
 import presenter.model.Presentation;
 import presenter.model.Slide;
+import presenter.ui.presentation.PresenterControl;
+import presenter.ui.presentation.ScaledImage;
 
 public class SlidesTool extends Tool {
 

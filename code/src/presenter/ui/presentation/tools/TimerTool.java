@@ -1,4 +1,4 @@
-package presenter.ui.presentation;
+package presenter.ui.presentation.tools;
 
 import java.util.regex.Pattern;
 
@@ -16,6 +16,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+
+import presenter.ui.presentation.PresenterControl;
 
 public class TimerTool extends Tool {
 	private Label timerLabel;

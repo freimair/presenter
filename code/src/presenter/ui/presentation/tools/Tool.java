@@ -1,6 +1,8 @@
-package presenter.ui.presentation;
+package presenter.ui.presentation.tools;
 
 import org.eclipse.swt.widgets.Composite;
+
+import presenter.ui.presentation.PresenterControl;
 
 public abstract class Tool extends Composite {
 

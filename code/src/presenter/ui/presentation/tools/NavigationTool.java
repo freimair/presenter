@@ -1,4 +1,4 @@
-package presenter.ui.presentation;
+package presenter.ui.presentation.tools;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import presenter.model.Presentation;
+import presenter.ui.presentation.PresenterControl;
 
 public class NavigationTool extends Tool {
 
