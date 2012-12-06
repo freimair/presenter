@@ -80,9 +80,17 @@ public class SlideItem extends Composite {
 								public void widgetSelected(SelectionEvent e) {
 									FileDialog fileDialog = new FileDialog(
 											getShell());
-									fileDialog.open();
-									File notesFile = new File(fileDialog
-											.getFileName());
+									fileDialog
+											.setFilterExtensions(new String[] { "*.jpg;*.pdf" });
+
+									// open dialog
+									String result = fileDialog.open();
+
+									// and return if cancelled
+									if ("".equals(result))
+										return;
+
+									File notesFile = new File(result);
 
 									if (notesFile.getName().endsWith(".pdf")) {
 										InputDialog dialog = new InputDialog(
