@@ -18,11 +18,14 @@ public class Time implements Comparable<Time>, Cloneable {
 	}
 
 	public Time(String text) {
-		String[] tmp = text.split(":");
+		String[] tmp = text.replace("-", "").split(":");
 
 		for (int i = tmp.length - 1; i >= 0; i--)
 			seconds += Integer.parseInt(tmp[i])
 					* Math.pow(60, tmp.length - 1 - i);
+
+		if (text.startsWith("-"))
+			seconds = -seconds;
 	}
 
 	public void decrease() {
@@ -56,7 +59,7 @@ public class Time implements Comparable<Time>, Cloneable {
 
 		int seconds = remainder;
 
-		return (0 > seconds ? "-" : " ")
+		return (0 > seconds ? "-" : "")
 				+ ((Math.abs(hours) < 10 ? "0" : "") + Math.abs(hours) + ":"
 						+ (Math.abs(minutes) < 10 ? "0" : "")
 						+ Math.abs(minutes) + ":"

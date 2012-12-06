@@ -13,8 +13,6 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import presenter.Presenter;
-
 
 public class Presentation {
 
@@ -32,8 +30,10 @@ public class Presentation {
 
 	public static void save(File file) {
 		Document document = new Document(new Element(
-				Presenter.class.getSimpleName()));
+				Presentation.class.getSimpleName()));
 		Element root = document.getRootElement();
+		if (null != instance.duration)
+			root.setAttribute("duration", instance.duration.toString());
 		for (Slide currentSlide : instance.slides)
 			try {
 				root.addContent(currentSlide.save(file.getParentFile()));
@@ -88,6 +88,14 @@ public class Presentation {
 		return instance.slides;
 	}
 
+	public static void setDuration(Time time) {
+		instance.duration = time;
+	}
+
+	public static Time getDuration() {
+		return instance.duration;
+	}
+
 	public static Time getNextCheckpoint() {
 		for (int i = instance.index; i < instance.slides.size(); i++) {
 			Time checkpoint = instance.slides.get(i).getCheckpoint();
@@ -104,6 +112,7 @@ public class Presentation {
 	// ########## NON-STATICS ##########
 	private List<Slide> slides;
 	private int index = 0;
+	private Time duration;
 
 	/**
 	 * for creating an empty presentation from scratch.
@@ -121,6 +130,11 @@ public class Presentation {
 		SAXBuilder builder = new SAXBuilder();
 		try {
 			Element root = builder.build(file).getRootElement();
+			try {
+				duration = new Time(root.getAttributeValue("duration"));
+			} catch (NullPointerException e) {
+				// no duration set. does not bother us
+			}
 			slides = new ArrayList<Slide>();
 			for (Object current : root.getChildren("slide"))
 				slides.add(new Slide((Element) current, file.getParentFile()));

@@ -1,10 +1,5 @@
 package presenter.ui.presentation.tools;
 
-import java.util.regex.Pattern;
-
-import org.eclipse.jface.dialogs.IInputValidator;
-import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -49,7 +44,9 @@ public class TimerTool extends Tool {
 		startstopTimer.setText("start");
 		startstopTimer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true));
+
 		final Timer timer = new Timer();
+		timer.preset(Presentation.getDuration());
 		startstopTimer.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -76,35 +73,8 @@ public class TimerTool extends Tool {
 				startstopTimer.setText("start");
 			}
 		});
+	}
 
-		Button presetTimer = new Button(this, SWT.PUSH);
-		presetTimer.setText("preset");
-		presetTimer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		presetTimer.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent event) {
-				InputDialog dlg = new InputDialog(Display.getCurrent()
-						.getActiveShell(), "Preset Stopwatch",
-						"hours:minutes:seconds/minutes:seconds/seconds", "",
-						new TimeValidator());
-				if (dlg.open() == Window.OK) {
-
-
-					timer.preset(new Time(dlg.getValue()));
-				}
-			}
-		});
-		}
-
-	private class TimeValidator implements IInputValidator {
-
-		@Override
-		public String isValid(String newText) {
-			return Pattern.matches("\\d*:?\\d*:?\\d+", newText) ? null
-					: "not a valid time";
-		}
-
-		}
-		
 	private class Timer implements Runnable {
 		private Time presetTime;
 		private Time current;
@@ -149,8 +119,6 @@ public class TimerTool extends Tool {
 
 	@Override
 	public void update() {
-			// there is a checkpoint associated with the current slide
-			// so we gather the next checkpoint
-			nextCheckpoint = Presentation.getNextCheckpoint();
+		nextCheckpoint = Presentation.getNextCheckpoint();
 	};
 }
