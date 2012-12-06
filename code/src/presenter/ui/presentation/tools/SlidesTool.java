@@ -89,7 +89,7 @@ public class SlidesTool extends Tool {
 
 				public void paintControl(PaintEvent e) {
 					ScaledImage thumbnail = new ScaledImage(
-							(Image) currentSlide
+							(Image) currentSlide.getSlide()
 							.getContent(), container.getBounds().width,
 							container.getBounds().height);
 

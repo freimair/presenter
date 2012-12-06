@@ -22,10 +22,10 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
-import presenter.model.PdfNotes;
-import presenter.model.PhotoNotes;
 import presenter.model.Presentation;
 import presenter.model.Slide;
+import presenter.model.content.PdfContent;
+import presenter.model.content.PhotoContent;
 
 
 public class SlideItem extends Composite {
@@ -101,13 +101,13 @@ public class SlideItem extends Composite {
 												"1", null);
 										dialog.open();
 										// dialog.getValue()
-										mySlide.addNotes(new PdfNotes(
+										mySlide.setNotes(new PdfContent(
 												notesFile, Integer
 														.valueOf(dialog
 																.getValue())));
 										
 									} else
-										mySlide.addNotes(new PhotoNotes(
+										mySlide.setNotes(new PhotoContent(
 												notesFile));
 
 									myDialog.update();
@@ -168,7 +168,7 @@ public class SlideItem extends Composite {
 			@Override
 			public void run() {
 
-				Image src = (Image) mySlide.getContent();
+				Image src = (Image) mySlide.getSlide().getContent();
 				Point dimensions = resize(src.getBounds(),
 						slideLabel.getBounds());
 

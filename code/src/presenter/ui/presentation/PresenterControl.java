@@ -43,7 +43,8 @@ public class PresenterControl extends ApplicationWindow {
 	}
 	
 	public void update() {
-		window.setImage((Image) Presentation.getCurrent().getContent());
+		window.setImage((Image) Presentation.getCurrent().getSlide()
+				.getContent());
 
 		for (Tool current : tools)
 			current.update();

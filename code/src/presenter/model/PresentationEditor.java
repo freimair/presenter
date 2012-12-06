@@ -6,6 +6,9 @@ import java.util.List;
 import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 
+import presenter.model.content.PdfContent;
+import presenter.model.content.PhotoContent;
+
 public class PresentationEditor {
 
 	private List<Slide> presentation;
@@ -52,7 +55,7 @@ public class PresentationEditor {
 	}
 
 	private void loadPhoto(File file) {
-		presentation.add(new PhotoSlide(file));
+		presentation.add(new Slide(new PhotoContent(file)));
 	}
 
 	public void loadFromPdf(File file) {
@@ -65,10 +68,10 @@ public class PresentationEditor {
 			PdfDecoder decoder = new PdfDecoder();
 			decoder.openPdfFile(file.getAbsolutePath());
 			for (int i = 1; i < decoder.getPageCount(); i++) {
-				Slide slide = new PdfSlide(file, i);
+				Slide slide = new Slide(new PdfContent(file, i));
 				presentation.add(slide);
 				if (useEverySecondPageAsNotes)
-					slide.addNotes(new PdfNotes(file, ++i));
+					slide.setNotes(new PdfContent(file, ++i));
 			}
 		} catch (PdfException e) {
 			// TODO Auto-generated catch block

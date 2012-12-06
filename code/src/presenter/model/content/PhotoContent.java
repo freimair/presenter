@@ -1,4 +1,4 @@
-package presenter.model;
+package presenter.model.content;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,15 +9,15 @@ import org.jdom.Element;
 import presenter.FileUtils;
 import presenter.ImageUtils;
 
-public class PhotoSlide extends Slide {
+public class PhotoContent extends Content {
 
 	private File photoFile;
 
-	public PhotoSlide() {
+	public PhotoContent() {
 		// essential for instantiating slides dynamically
 	}
 
-	public PhotoSlide(File file) {
+	public PhotoContent(File file) {
 		setImage(file);
 	}
 	
@@ -31,12 +31,12 @@ public class PhotoSlide extends Slide {
 	}
 
 	@Override
-	public void saveContent(Element contentNode, File base) throws IOException {
+	public void save(Element contentNode, File base) throws IOException {
 		contentNode.addContent(FileUtils.getRelativePath(base, photoFile));
 	}
 
 	@Override
-	protected void loadContent(Element contentNode, File base) {
+	public void load(Element contentNode, File base) {
 		setImage(FileUtils.recreateAbsolutPath(base, contentNode.getText()));
 	}
 }

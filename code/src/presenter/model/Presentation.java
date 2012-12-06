@@ -107,8 +107,8 @@ public class Presentation {
 		try {
 			Element root = builder.build(file).getRootElement();
 			slides = new ArrayList<Slide>();
-			for (Object current : root.getChildren())
-				slides.add(Slide.create((Element) current, file.getParentFile()));
+			for (Object current : root.getChildren("slide"))
+				slides.add(new Slide((Element) current, file.getParentFile()));
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,4 +1,4 @@
-package presenter.model;
+package presenter.model.content;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,16 +12,16 @@ import org.jpedal.exception.PdfException;
 import presenter.FileUtils;
 import presenter.ui.SWTUtils;
 
-public class PdfSlide extends Slide {
+public class PdfContent extends Content {
 
 	private File path = null;
 	private Integer pageNumber = 1;
 
-	public PdfSlide() {
+	public PdfContent() {
 		// essential for instantiating slides dynamically
 	}
 
-	public PdfSlide(File path, int page) {
+	public PdfContent(File path, int page) {
 		this.path = path;
 		this.pageNumber = page;
 	}
@@ -55,15 +55,14 @@ public class PdfSlide extends Slide {
 	}
 
 	@Override
-	public void saveContent(Element contentNode, File base) throws IOException {
+	public void save(Element contentNode, File base) throws IOException {
 		contentNode.addContent(FileUtils.getRelativePath(base, path));
 		contentNode.setAttribute("page", pageNumber.toString());
 	}
 
 	@Override
-	protected void loadContent(Element contentNode, File base) {
+	public void load(Element contentNode, File base) {
 		path = FileUtils.recreateAbsolutPath(base, contentNode.getText());
 		pageNumber = Integer.valueOf(contentNode.getAttributeValue("page"));
 	}
-
 }

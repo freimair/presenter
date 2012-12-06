@@ -5,68 +5,60 @@ import java.io.IOException;
 
 import org.jdom.Element;
 
-public abstract class Slide extends Displayable {
+import presenter.model.content.Content;
 
-	// ############ STATICS ############
-	public static Slide create(Element current, File base) {
-		try {
-			Slide result = (Slide) Class.forName(
-					"presenter.model."
-							+ current.getAttribute("type").getValue())
-					.newInstance();
-			result.load(current, base);
-			return result;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+public class Slide {
+
+	protected Content slide;
+	protected Content notes;
+
+	public Slide(Element slideNode, File base) {
+		load(slideNode, base);
 	}
 
-	// ########## NON-STATICS ##########
+	public Slide(Content slide) {
+		this.slide = slide;
+	}
 
-	protected Notes notes;
+	public Displayable getSlide() {
+		return slide;
+	}
 
 	/**
-	 * @return the {@link Notes} if existing, the {@link Slide} if not
+	 * @return the {@link Content} if existing, the {@link Slide} if not
 	 */
 	public Displayable getNotes() {
 		if (null == notes)
-			return this;
+			return slide;
 		return notes;
 	}
 
-	public void addNotes(Notes notes) {
+	public void setNotes(Content notes) {
 		this.notes = notes;
-	}
-
-	public void addNotesFromFile(File notesFile) {
-
 	}
 
 	public Element save(File base) throws IOException {
 		Element result = new Element("slide");
-		result.setAttribute("type", this.getClass().getSimpleName());
 
-		Element xmlContent = new Element("content");
-		result.addContent(xmlContent);
-		saveContent(xmlContent, base);
+		Element contentNode = new Element("content");
+		contentNode.setAttribute("type", slide.getClass().getSimpleName());
+		slide.save(contentNode, base);
+		result.addContent(contentNode);
 
-		if (null != notes)
-			result.addContent(notes.save(base));
+		if (null != notes) {
+			Element notesNode = new Element("notes");
+			notesNode.setAttribute("type", notes.getClass().getSimpleName());
+			notes.save(notesNode, base);
+			result.addContent(notesNode);
+		}
 
 		return result;
 	}
 
-	protected abstract void saveContent(Element contentNode, File base)
-			throws IOException;
-
 	public void load(Element slideNode, File base) {
-
-		loadContent(slideNode.getChild("content"), base);
+		slide = Content.create(slideNode.getChild("content"), base);
 
 		if (null != slideNode.getChild("notes"))
-			notes = Notes.create(slideNode.getChild("notes"), base);
+			notes = Content.create(slideNode.getChild("notes"), base);
 	}
-
-	protected abstract void loadContent(Element contentNode, File base);
 }

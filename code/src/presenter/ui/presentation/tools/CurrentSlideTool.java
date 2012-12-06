@@ -23,7 +23,7 @@ public class CurrentSlideTool extends Tool {
 
 			public void paintControl(PaintEvent e) {
 				ScaledImage thumbnail = new ScaledImage((Image) Presentation
-						.getCurrent().getContent(),
+						.getCurrent().getSlide().getContent(),
 						thumbnailCanvas.getBounds().width, thumbnailCanvas
 								.getBounds().height);
 
