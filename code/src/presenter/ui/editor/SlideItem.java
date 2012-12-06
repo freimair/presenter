@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
 import presenter.model.PdfNotes;
+import presenter.model.PhotoNotes;
 import presenter.model.Presentation;
 import presenter.model.Slide;
 
@@ -106,7 +107,8 @@ public class SlideItem extends Composite {
 																.getValue())));
 										
 									} else
-										mySlide.addNotesFromFile(notesFile);
+										mySlide.addNotes(new PhotoNotes(
+												notesFile));
 
 									myDialog.update();
 								}
