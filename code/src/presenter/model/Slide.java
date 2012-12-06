@@ -38,8 +38,8 @@ public class Slide {
 		this.notes = notes;
 	}
 
-	public void setCheckpoint(int seconds) {
-		checkpoint = new Time(seconds);
+	public void setCheckpoint(Time time) {
+		checkpoint = time;
 	}
 
 	public Time getCheckpoint() {
@@ -48,6 +48,9 @@ public class Slide {
 
 	public Element save(File base) throws IOException {
 		Element result = new Element("slide");
+
+		if (null != checkpoint)
+			result.setAttribute("checkpoint", checkpoint.toString());
 
 		Element contentNode = new Element("content");
 		contentNode.setAttribute("type", slide.getClass().getSimpleName());
@@ -65,6 +68,12 @@ public class Slide {
 	}
 
 	public void load(Element slideNode, File base) {
+		try {
+			checkpoint = new Time(slideNode.getAttributeValue("checkpoint"));
+		} catch (NullPointerException e) {
+			// no checkpoint set. does not bother us.
+		}
+
 		slide = Content.create(slideNode.getChild("content"), base);
 
 		if (null != slideNode.getChild("notes"))

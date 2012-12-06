@@ -16,6 +16,7 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
@@ -27,6 +28,7 @@ import org.eclipse.swt.widgets.ToolItem;
 
 import presenter.model.Presentation;
 import presenter.model.Slide;
+import presenter.model.Time;
 import presenter.model.content.PdfContent;
 import presenter.model.content.PhotoContent;
 
@@ -36,6 +38,7 @@ public class SlideItem extends Composite {
 	private Slide mySlide;
 	private EditDialog myDialog;
 	private Menu dropMenu;
+	private Label checkpointLabel;
 
 	public SlideItem(Composite parent, int style, Slide slide,
 			EditDialog editDialog) {
@@ -51,10 +54,18 @@ public class SlideItem extends Composite {
 		this.setBackground(parent.getDisplay().getSystemColor(
 				SWT.COLOR_DARK_GRAY));
 
-		ToolBar toolbar = new ToolBar(this, SWT.FLAT);
+		Composite toolbarComposite = new Composite(this, SWT.NONE);
+		GridLayout gridLayout = new GridLayout(2, false);
+		gridLayout.marginHeight = 0;
+		gridLayout.marginWidth = 0;
+		toolbarComposite.setLayout(gridLayout);
+		toolbarComposite.setBackground(parent.getDisplay().getSystemColor(
+				SWT.COLOR_DARK_GRAY));
 		GridData layout = new GridData();
 		layout.horizontalSpan = 2;
-		toolbar.setLayoutData(layout);
+		toolbarComposite.setLayoutData(layout);
+
+		ToolBar toolbar = new ToolBar(toolbarComposite, SWT.FLAT);
 
 		ToolItem addNotesButton = new ToolItem(toolbar, SWT.DROP_DOWN);
 		addNotesButton.setText("add notes");
@@ -174,18 +185,36 @@ public class SlideItem extends Composite {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				InputDialog dlg = new InputDialog(Display.getCurrent()
-						.getActiveShell(), "Preset Stopwatch",
+						.getActiveShell(), "set checkpoint",
 						"hours:minutes:seconds/minutes:seconds/seconds", "",
 						new TimeValidator());
 				if (dlg.open() == Window.OK) {
-					String[] tmp = dlg.getValue().split(":");
-
-					int seconds = 0;
-					for (int i = tmp.length - 1; i >= 0; i--)
-						seconds += Integer.parseInt(tmp[i])
-								* Math.pow(60, tmp.length - 1 - i);
-					mySlide.setCheckpoint(seconds);
+					mySlide.setCheckpoint(new Time(dlg.getValue()));
+					checkpointLabel.setText(mySlide.getCheckpoint().toString());
+					checkpointLabel.getParent().setVisible(true);
 				}
+			}
+		});
+
+		Composite checkpointComposite = new Composite(toolbarComposite,
+				SWT.NONE);
+		checkpointComposite.setLayout(new GridLayout(2, false));
+		checkpointLabel = new Label(checkpointComposite, SWT.NONE);
+		try {
+			checkpointLabel.setText(mySlide.getCheckpoint().toString());
+		} catch (NullPointerException ex) {
+			checkpointLabel.setText("00:00:00");
+			checkpointComposite.setVisible(false);
+		}
+		Button removeCheckpointButton = new Button(checkpointComposite,
+				SWT.PUSH);
+		removeCheckpointButton.setText("x");
+		removeCheckpointButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				mySlide.setCheckpoint(null);
+				checkpointLabel.getParent().setVisible(false);
 			}
 		});
 
