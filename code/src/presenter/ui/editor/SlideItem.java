@@ -1,7 +1,10 @@
 package presenter.ui.editor;
 import java.io.File;
+import java.util.regex.Pattern;
 
+import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -163,6 +166,29 @@ public class SlideItem extends Composite {
 			}
 		});
 
+		ToolItem checkpointButton = new ToolItem(toolbar, SWT.PUSH);
+		checkpointButton.setText("add checkpoint");
+		checkpointButton.setToolTipText("add a checkpoint to this slide");
+		checkpointButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				InputDialog dlg = new InputDialog(Display.getCurrent()
+						.getActiveShell(), "Preset Stopwatch",
+						"hours:minutes:seconds/minutes:seconds/seconds", "",
+						new TimeValidator());
+				if (dlg.open() == Window.OK) {
+					String[] tmp = dlg.getValue().split(":");
+
+					int seconds = 0;
+					for (int i = tmp.length - 1; i >= 0; i--)
+						seconds += Integer.parseInt(tmp[i])
+								* Math.pow(60, tmp.length - 1 - i);
+					mySlide.setCheckpoint(seconds);
+				}
+			}
+		});
+
 		final Label slideLabel = new Label(this, SWT.CENTER);
 		slideLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true));
@@ -230,5 +256,15 @@ public class SlideItem extends Composite {
 			result.x = (int) ((double) target.width / src.height * src.width);
 
 		return result;
+	}
+
+	private class TimeValidator implements IInputValidator {
+
+		@Override
+		public String isValid(String newText) {
+			return Pattern.matches("\\d*:?\\d*:?\\d+", newText) ? null
+					: "not a valid time";
+		}
+
 	}
 }

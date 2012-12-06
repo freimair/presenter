@@ -17,22 +17,31 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
+import presenter.model.Presentation;
 import presenter.ui.presentation.PresenterControl;
 
 public class TimerTool extends Tool {
-	private Label timerLabel;
+	private Label overallLabel;
+	private int nextCheckpoint = -1;
+	private Label nextLabel;
 
 	public TimerTool(Composite parent, int style, PresenterControl control) {
 		super(parent, style, control);
 		this.setLayout(new GridLayout(3, true));
 
-		timerLabel = new Label(this, SWT.NONE);
+		nextLabel = new Label(this, SWT.NONE);
 		FontData newFontData = new FontData(
-				timerLabel.getFont().getFontData()[0].toString());
+				nextLabel.getFont().getFontData()[0].toString());
 		newFontData.height = 30;
-		timerLabel.setFont(new Font(Display.getCurrent(), newFontData));
-		timerLabel.setText(" 00:00:00 ");
-		timerLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
+		nextLabel.setFont(new Font(Display.getCurrent(), newFontData));
+		nextLabel.setText("next checkpoint");
+		nextLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3,
+				1));
+
+		overallLabel = new Label(this, SWT.NONE);
+		overallLabel.setFont(new Font(Display.getCurrent(), newFontData));
+		overallLabel.setText(" 00:00:00 ");
+		overallLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
 				3, 1));
 
 		final Button startstopTimer = new Button(this, SWT.PUSH);
@@ -110,12 +119,20 @@ public class TimerTool extends Tool {
 			seconds--;
 			int hours = seconds / 3600, remainder = seconds % 3600, minutes = remainder / 60, seconds = remainder % 60;
 	
-			timerLabel.setText((0 > seconds ? "-" : " ")
+			overallLabel.setText((0 > seconds ? "-" : " ")
 					+ ((Math.abs(hours) < 10 ? "0" : "") + Math.abs(hours)
 							+ ":" + (Math.abs(minutes) < 10 ? "0" : "")
 							+ Math.abs(minutes) + ":"
 							+ (Math.abs(seconds) < 10 ? "0" : "") + Math
 								.abs(seconds)));
+
+			String nextText;
+			if(0 > nextCheckpoint)
+				nextText = "";
+			else
+				nextText = Integer.toString(this.seconds + 1 - defaultseconds
+						+ nextCheckpoint);
+			nextLabel.setText(nextText);
 
 			if (active)
 				Display.getCurrent().timerExec(1000, this);
@@ -143,7 +160,12 @@ public class TimerTool extends Tool {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-
+		if (0 > nextCheckpoint
+				|| 0 <= Presentation.getCurrent().getCheckpoint()) {
+			// there is a checkpoint associated with the current slide
+			// so we gather the next checkpoint
+			nextCheckpoint = Presentation.getNextCheckpoint();
+			System.out.println(nextCheckpoint);
+		}
 	};
 }

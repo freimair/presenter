@@ -11,6 +11,7 @@ public class Slide {
 
 	protected Content slide;
 	protected Content notes;
+	private int checkpoint = -1;
 
 	public Slide(Element slideNode, File base) {
 		load(slideNode, base);
@@ -37,6 +38,14 @@ public class Slide {
 		this.notes = notes;
 	}
 
+	public void setCheckpoint(int seconds) {
+		checkpoint = seconds;
+	}
+
+	public int getCheckpoint() {
+		return checkpoint;
+	}
+
 	public Element save(File base) throws IOException {
 		Element result = new Element("slide");
 
@@ -61,4 +70,5 @@ public class Slide {
 		if (null != slideNode.getChild("notes"))
 			notes = Content.create(slideNode.getChild("notes"), base);
 	}
+
 }

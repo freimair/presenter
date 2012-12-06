@@ -82,6 +82,15 @@ public class Presentation {
 		return instance.slides;
 	}
 
+	public static int getNextCheckpoint() {
+		for (int i = instance.index; i < instance.slides.size(); i++) {
+			int checkpoint = instance.slides.get(i).getCheckpoint();
+			if (checkpoint > -1)
+				return checkpoint;
+		}
+		return -1;
+	}
+
 	public static PresentationEditor getEditor() {
 		return new PresentationEditor(instance.slides);
 	}
