@@ -55,6 +55,7 @@ public class SlideItem extends Composite {
 
 		ToolItem addNotesButton = new ToolItem(toolbar, SWT.DROP_DOWN);
 		addNotesButton.setText("add notes");
+		addNotesButton.setToolTipText("add/replace notes for this slide");
 		addNotesButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -65,6 +66,7 @@ public class SlideItem extends Composite {
 
 					MenuItem addTextNotesItem = new MenuItem(dropMenu, SWT.PUSH);
 					addTextNotesItem.setText("add text notes");
+					addTextNotesItem.setEnabled(false);
 					addTextNotesItem
 							.addSelectionListener(new SelectionAdapter() {
 								@Override
@@ -127,6 +129,7 @@ public class SlideItem extends Composite {
 
 		ToolItem upButton = new ToolItem(toolbar, SWT.PUSH);
 		upButton.setText("up");
+		upButton.setToolTipText("move the slide before its predecessor");
 		upButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -138,6 +141,7 @@ public class SlideItem extends Composite {
 
 		ToolItem downButton = new ToolItem(toolbar, SWT.PUSH);
 		downButton.setText("down");
+		downButton.setToolTipText("move the slide after its successor");
 		downButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -149,6 +153,7 @@ public class SlideItem extends Composite {
 
 		ToolItem removeButton = new ToolItem(toolbar, SWT.PUSH);
 		removeButton.setText("x");
+		removeButton.setToolTipText("remove the slide from the presentation");
 		removeButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override

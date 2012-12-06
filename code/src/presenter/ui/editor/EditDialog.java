@@ -79,7 +79,8 @@ public class EditDialog extends ApplicationWindow {
 		ToolBar toolbar = (ToolBar) super.createToolBarControl(parent);
 
 		ToolItem addButton = new ToolItem(toolbar, SWT.PUSH);
-		addButton.setText("add");
+		addButton.setText("add slide");
+		addButton.setToolTipText("add new Slide from pdf or image");
 		addButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -110,7 +111,8 @@ public class EditDialog extends ApplicationWindow {
 		});
 
 		ToolItem zoomInButton = new ToolItem(toolbar, SWT.PUSH);
-		zoomInButton.setText("+");
+		zoomInButton.setText("zoom in");
+		zoomInButton.setToolTipText("increase thumbnail size");
 		zoomInButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -121,7 +123,8 @@ public class EditDialog extends ApplicationWindow {
 		});
 
 		ToolItem zoomOutButton = new ToolItem(toolbar, SWT.PUSH);
-		zoomOutButton.setText("-");
+		zoomOutButton.setText("zoom out");
+		zoomOutButton.setToolTipText("decrease thumbnail size");
 		zoomOutButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -132,7 +135,8 @@ public class EditDialog extends ApplicationWindow {
 		});
 
 		ToolItem startButton = new ToolItem(toolbar, SWT.PUSH);
-		startButton.setText("Start");
+		startButton.setText("Start presentation");
+		startButton.setToolTipText("show the presentation windows");
 		startButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -144,6 +148,7 @@ public class EditDialog extends ApplicationWindow {
 
 		ToolItem saveButton = new ToolItem(toolbar, SWT.PUSH);
 		saveButton.setText("Save");
+		saveButton.setToolTipText("save the presentation to disk");
 		saveButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -164,6 +169,7 @@ public class EditDialog extends ApplicationWindow {
 
 		ToolItem openButton = new ToolItem(toolbar, SWT.PUSH);
 		openButton.setText("Open");
+		openButton.setToolTipText("load a presentation from disk");
 		openButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -176,6 +182,7 @@ public class EditDialog extends ApplicationWindow {
 
 		ToolItem exitButton = new ToolItem(toolbar, SWT.PUSH);
 		exitButton.setText("Exit");
+		exitButton.setToolTipText("Close the application");
 		exitButton.addSelectionListener(new SelectionAdapter() {
 
 			@Override
