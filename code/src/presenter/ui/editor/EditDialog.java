@@ -141,6 +141,7 @@ public class EditDialog extends ApplicationWindow {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				Presentation.moveTo(0);
 				PresenterControl dialog = new PresenterControl();
 				dialog.open();
 			}

@@ -18,11 +18,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
 import presenter.model.Presentation;
+import presenter.model.Time;
 import presenter.ui.presentation.PresenterControl;
 
 public class TimerTool extends Tool {
 	private Label overallLabel;
-	private int nextCheckpoint = -1;
+	private Time nextCheckpoint;
 	private Label nextLabel;
 
 	public TimerTool(Composite parent, int style, PresenterControl control) {
@@ -86,14 +87,9 @@ public class TimerTool extends Tool {
 						"hours:minutes:seconds/minutes:seconds/seconds", "",
 						new TimeValidator());
 				if (dlg.open() == Window.OK) {
-					String[] tmp = dlg.getValue().split(":");
 
-					int seconds = 0;
-					for (int i = tmp.length - 1; i >= 0; i--)
-						seconds += Integer.parseInt(tmp[i])
-								* Math.pow(60, tmp.length - 1 - i);
 
-					timer.preset(seconds);
+					timer.preset(new Time(dlg.getValue()));
 				}
 			}
 		});
@@ -110,41 +106,34 @@ public class TimerTool extends Tool {
 		}
 		
 	private class Timer implements Runnable {
-		private int defaultseconds = 1;
-		private int seconds = defaultseconds;
+		private Time presetTime;
+		private Time current;
 		private boolean active = false;
 
 		@Override
 		public void run() {
-			seconds--;
-			int hours = seconds / 3600, remainder = seconds % 3600, minutes = remainder / 60, seconds = remainder % 60;
-	
-			overallLabel.setText((0 > seconds ? "-" : " ")
-					+ ((Math.abs(hours) < 10 ? "0" : "") + Math.abs(hours)
-							+ ":" + (Math.abs(minutes) < 10 ? "0" : "")
-							+ Math.abs(minutes) + ":"
-							+ (Math.abs(seconds) < 10 ? "0" : "") + Math
-								.abs(seconds)));
+			overallLabel.setText(current.toString());
 
-			String nextText;
-			if(0 > nextCheckpoint)
-				nextText = "";
-			else
-				nextText = Integer.toString(this.seconds + 1 - defaultseconds
-						+ nextCheckpoint);
-			nextLabel.setText(nextText);
+			try {
+				nextLabel.setText(current.subtract(presetTime)
+						.add(nextCheckpoint).toString());
+			} catch (NullPointerException e) {
+				nextLabel.setText("");
+			}
+
+			current.decrease();
 
 			if (active)
 				Display.getCurrent().timerExec(1000, this);
 		}
 
-		public void preset(int seconds) {
-			defaultseconds = seconds + 1;
+		public void preset(Time time) {
+			presetTime = time;
 			reset();
 		}
 
 		public void reset() {
-			seconds = defaultseconds;
+			current = presetTime.clone();
 			run();
 		}
 
@@ -160,12 +149,8 @@ public class TimerTool extends Tool {
 
 	@Override
 	public void update() {
-		if (0 > nextCheckpoint
-				|| 0 <= Presentation.getCurrent().getCheckpoint()) {
 			// there is a checkpoint associated with the current slide
 			// so we gather the next checkpoint
 			nextCheckpoint = Presentation.getNextCheckpoint();
-			System.out.println(nextCheckpoint);
-		}
 	};
 }

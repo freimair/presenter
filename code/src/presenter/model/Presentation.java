@@ -68,6 +68,12 @@ public class Presentation {
 		return get(--instance.index);
 	}
 
+	public static void moveTo(int index) {
+		index = (index % instance.slides.size() + instance.slides.size())
+				% instance.slides.size();
+		instance.index = index;
+	}
+
 	public static void moveTo(Slide slide) {
 		instance.index = instance.slides.indexOf(slide);
 	}
@@ -82,13 +88,13 @@ public class Presentation {
 		return instance.slides;
 	}
 
-	public static int getNextCheckpoint() {
+	public static Time getNextCheckpoint() {
 		for (int i = instance.index; i < instance.slides.size(); i++) {
-			int checkpoint = instance.slides.get(i).getCheckpoint();
-			if (checkpoint > -1)
+			Time checkpoint = instance.slides.get(i).getCheckpoint();
+			if (null != checkpoint)
 				return checkpoint;
 		}
-		return -1;
+		return null;
 	}
 
 	public static PresentationEditor getEditor() {

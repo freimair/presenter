@@ -11,7 +11,7 @@ public class Slide {
 
 	protected Content slide;
 	protected Content notes;
-	private int checkpoint = -1;
+	private Time checkpoint;
 
 	public Slide(Element slideNode, File base) {
 		load(slideNode, base);
@@ -39,10 +39,10 @@ public class Slide {
 	}
 
 	public void setCheckpoint(int seconds) {
-		checkpoint = seconds;
+		checkpoint = new Time(seconds);
 	}
 
-	public int getCheckpoint() {
+	public Time getCheckpoint() {
 		return checkpoint;
 	}
 
