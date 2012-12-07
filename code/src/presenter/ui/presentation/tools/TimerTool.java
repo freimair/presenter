@@ -126,6 +126,7 @@ public class TimerTool extends Tool {
 			} catch (NullPointerException e) {
 				nextLabel.setText("");
 			}
+			overallLabel.getParent().layout();
 		}
 
 		public void preset(Time time) {
