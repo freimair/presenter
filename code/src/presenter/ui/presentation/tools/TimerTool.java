@@ -25,6 +25,9 @@ public class TimerTool extends Tool {
 		super(parent, style, control);
 		this.setLayout(new GridLayout(3, true));
 
+		// update next checkpoint
+		update();
+
 		nextLabel = new Label(this, SWT.NONE);
 		FontData newFontData = new FontData(
 				nextLabel.getFont().getFontData()[0].toString());
@@ -103,7 +106,11 @@ public class TimerTool extends Tool {
 		}
 
 		public void reset() {
-			current = presetTime.clone();
+			try {
+				current = presetTime.clone();
+			} catch (NullPointerException e) {
+				current = new Time(0);
+			}
 			run();
 		}
 

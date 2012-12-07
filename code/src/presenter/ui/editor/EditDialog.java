@@ -7,8 +7,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.PaintEvent;
@@ -95,17 +93,6 @@ public class EditDialog extends ApplicationWindow {
 					durationText.clearSelection();
 			}
 		});
-		durationText.addFocusListener(new FocusAdapter() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (Pattern.matches("\\d\\d:\\d\\d:\\d\\d",
-						durationText.getText()))
-					Presentation.setDuration(new Time(durationText.getText()));
-				else
-					durationText.setText("00:00:00");
-			}
-		});
 
 		ScrolledComposite scrolledSlideComposite = new ScrolledComposite(
 				container, SWT.V_SCROLL);
@@ -133,6 +120,13 @@ public class EditDialog extends ApplicationWindow {
 		update();
 
 		return slidesComposite;
+	}
+
+	private void saveDuration() {
+		if (Pattern.matches("\\d\\d:\\d\\d:\\d\\d", durationText.getText()))
+			Presentation.setDuration(new Time(durationText.getText()));
+		else
+			durationText.setText("00:00:00");
 	}
 
 	@Override
@@ -202,6 +196,7 @@ public class EditDialog extends ApplicationWindow {
 
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
+				saveDuration();
 				Presentation.moveTo(0);
 				PresenterControl dialog = new PresenterControl();
 				dialog.open();
@@ -224,6 +219,7 @@ public class EditDialog extends ApplicationWindow {
 				if (!result.endsWith(".presentation"))
 					result += ".presentation";
 
+				saveDuration();
 				Presentation.save(new File(result));
 				Settings.setRecent(result);
 			}
