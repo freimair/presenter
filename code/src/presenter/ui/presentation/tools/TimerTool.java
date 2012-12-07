@@ -21,6 +21,8 @@ public class TimerTool extends Tool {
 	private Label overallLabel;
 	private Time nextCheckpoint;
 	private Label nextLabel;
+	private Label latencyLabel;
+	private Timer timer;
 
 	public TimerTool(Composite parent, int style, PresenterControl control) {
 		super(parent, style, control);
@@ -28,7 +30,7 @@ public class TimerTool extends Tool {
 		this.setLayoutData(new RowData(250, SWT.DEFAULT));
 
 		// update next checkpoint
-		update();
+		init();
 
 		Label nextLabelLabel = new Label(this, SWT.NONE);
 		nextLabelLabel.setText("Time until next checkpoint");
@@ -41,6 +43,15 @@ public class TimerTool extends Tool {
 		nextLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false,
 				2, 1));
 		nextLabel.setFont(new Font(Display.getCurrent(), newFontData));
+
+		Label latencyLabelLabel = new Label(this, SWT.NONE);
+		latencyLabelLabel.setText("Latency to checkpoints");
+		latencyLabelLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				false, 2, 1));
+		latencyLabel = new Label(this, SWT.RIGHT);
+		latencyLabel.setFont(new Font(Display.getCurrent(), newFontData));
+		latencyLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				false, 2, 1));
 
 		Label overallLabelLabel = new Label(this, SWT.NONE);
 		overallLabelLabel.setText("overall time left");
@@ -55,7 +66,7 @@ public class TimerTool extends Tool {
 		startstopTimer.setText("start");
 		startstopTimer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final Timer timer = new Timer();
+		timer = new Timer();
 		timer.preset(Presentation.getDuration());
 		startstopTimer.addSelectionListener(new SelectionAdapter() {
 
@@ -89,22 +100,32 @@ public class TimerTool extends Tool {
 		private Time presetTime;
 		private Time current;
 		private boolean active = false;
+		private Time latency;
 
 		@Override
 		public void run() {
+			if (!active)
+				return;
+
+			Display.getCurrent().timerExec(1000, this);
+
+			updateControls();
+
+			current.decrease();
+		}
+
+		private void updateControls() {
 			overallLabel.setText(current.toString());
 
 			try {
-				nextLabel.setText(current.subtract(presetTime)
-						.add(nextCheckpoint).toString());
+				Time tmp = current.subtract(presetTime).add(nextCheckpoint);
+				if (0 < tmp.compareTo(new Time(0)))
+					latency.decrease();
+				latencyLabel.setText(latency.toString());
+				nextLabel.setText(tmp.toString());
 			} catch (NullPointerException e) {
 				nextLabel.setText("");
 			}
-
-			current.decrease();
-
-			if (active)
-				Display.getCurrent().timerExec(1000, this);
 		}
 
 		public void preset(Time time) {
@@ -113,12 +134,13 @@ public class TimerTool extends Tool {
 		}
 
 		public void reset() {
+			latency = new Time(0);
 			try {
 				current = presetTime.clone();
 			} catch (NullPointerException e) {
 				current = new Time(0);
 			}
-			run();
+			updateControls();
 		}
 
 		public void stop() {
@@ -129,10 +151,34 @@ public class TimerTool extends Tool {
 			active = true;
 			run();
 		}
+
+		public void adjustLatency() {
+			if (!active)
+				return;
+			try {
+				Time tmp = current.subtract(presetTime).add(nextCheckpoint);
+				if (0 > tmp.compareTo(new Time(0)))
+					latency = latency.add(tmp);
+				updateControls();
+			} catch (Exception e) {
+				// don't care
+			}
+		}
+	}
+
+	private void init() {
+		nextCheckpoint = Presentation.getNextCheckpoint();
 	}
 
 	@Override
 	public void update() {
-		nextCheckpoint = Presentation.getNextCheckpoint();
+		timer.adjustLatency();
+		init();
 	};
+
+	@Override
+	public void dispose() {
+		timer.stop();
+		super.dispose();
+	}
 }
