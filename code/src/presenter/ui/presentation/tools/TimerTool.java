@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -23,30 +24,36 @@ public class TimerTool extends Tool {
 
 	public TimerTool(Composite parent, int style, PresenterControl control) {
 		super(parent, style, control);
-		this.setLayout(new GridLayout(3, true));
+		this.setLayout(new GridLayout(2, false));
+		this.setLayoutData(new RowData(250, SWT.DEFAULT));
 
 		// update next checkpoint
 		update();
 
-		nextLabel = new Label(this, SWT.NONE);
+		Label nextLabelLabel = new Label(this, SWT.NONE);
+		nextLabelLabel.setText("Time until next checkpoint");
+		nextLabelLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				false, 2, 1));
+		nextLabel = new Label(this, SWT.RIGHT);
 		FontData newFontData = new FontData(
 				nextLabel.getFont().getFontData()[0].toString());
 		newFontData.height = 30;
+		nextLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false,
+				2, 1));
 		nextLabel.setFont(new Font(Display.getCurrent(), newFontData));
-		nextLabel.setText("next checkpoint");
-		nextLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3,
-				1));
 
-		overallLabel = new Label(this, SWT.NONE);
+		Label overallLabelLabel = new Label(this, SWT.NONE);
+		overallLabelLabel.setText("overall time left");
+		overallLabelLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				false, 2, 1));
+		overallLabel = new Label(this, SWT.RIGHT);
 		overallLabel.setFont(new Font(Display.getCurrent(), newFontData));
-		overallLabel.setText(" 00:00:00 ");
-		overallLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true,
-				3, 1));
+		overallLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				false, 2, 1));
 
 		final Button startstopTimer = new Button(this, SWT.PUSH);
 		startstopTimer.setText("start");
-		startstopTimer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
-				true));
+		startstopTimer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final Timer timer = new Timer();
 		timer.preset(Presentation.getDuration());
@@ -66,7 +73,7 @@ public class TimerTool extends Tool {
 
 		Button resetTimer = new Button(this, SWT.PUSH);
 		resetTimer.setText("reset");
-		resetTimer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		resetTimer.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		resetTimer.addSelectionListener(new SelectionAdapter() {
 
 			@Override

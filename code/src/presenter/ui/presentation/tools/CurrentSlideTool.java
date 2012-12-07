@@ -18,7 +18,7 @@ public class CurrentSlideTool extends Tool {
 	public CurrentSlideTool(Composite parent, int style, PresenterControl control) {
 		super(parent, style, control);
 		thumbnailCanvas = new Canvas(this, SWT.NONE);
-		thumbnailCanvas.setBounds(0, 0, 210, 210);
+		thumbnailCanvas.setBounds(0, 0, 250, 250);
 		thumbnailCanvas.addPaintListener(new PaintListener() {
 
 			public void paintControl(PaintEvent e) {
