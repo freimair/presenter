@@ -10,6 +10,8 @@ import org.jpedal.PdfDecoder;
 import org.jpedal.exception.PdfException;
 
 import presenter.FileUtils;
+import presenter.ImageUtils;
+import presenter.Settings;
 import presenter.ui.SWTUtils;
 
 public class PdfContent extends Content {
@@ -35,18 +37,42 @@ public class PdfContent extends Content {
 	public Object getContent() {
 		if (null == content) {
 			try {
-				PdfDecoder decoder = new PdfDecoder();
-				decoder.openPdfFile(path.getAbsolutePath());
-				decoder.setPageParameters(10, pageNumber);
-				decoder.useHiResScreenDisplay(true);
+			if (Settings.getGoWithJPedal()) {
+					PdfDecoder decoder = new PdfDecoder();
+					decoder.openPdfFile(path.getAbsolutePath());
+					decoder.setPageParameters(10, pageNumber);
+					decoder.useHiResScreenDisplay(true);
+					content = new Image(Display.getCurrent(),
+							SWTUtils.convertToSWT(decoder
+									.getPageAsImage(pageNumber)));
+			} else {
 
-				content = new Image(Display.getCurrent(),
-						SWTUtils.convertToSWT(decoder
-								.getPageAsImage(pageNumber)));
-			} catch (PdfException e) {
+					File tmpfile = new File(path.getAbsoluteFile().getParent()
+							+ File.separator + "deleteme.jpg");
+					Process p = Runtime.getRuntime().exec(
+							new String[] {
+									Settings.getImageMagicBinaryLocation(),
+									"-density",
+									"300",
+									"-quality",
+									"90",
+									path.getAbsolutePath() + "["
+											+ (pageNumber - 1) + "]",
+									tmpfile.getAbsolutePath() });
+					p.waitFor();
+
+					content = ImageUtils.load(tmpfile);
+
+					tmpfile.delete();
+
+			}
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (Exception e) {
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (PdfException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

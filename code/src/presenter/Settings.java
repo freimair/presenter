@@ -36,4 +36,25 @@ public class Settings {
 		}
 		return result;
 	}
+
+	private static final String imagemagicklocation = "imagemagickbinary";
+
+	public static String getImageMagicBinaryLocation() {
+		return preferences.get(imagemagicklocation, "convert");
+	}
+
+	public static void setImageMagicBinaryLocation(String text) {
+		preferences.put(imagemagicklocation, text);
+	}
+
+	private static final String gowithjpetal = "gowithjpetal";
+
+	public static boolean getGoWithJPedal() {
+		return preferences.get(gowithjpetal, "true").equals("true") ? true
+				: false;
+	}
+
+	public static void setGoWithJPedal(boolean goWithJPedal) {
+		preferences.put(imagemagicklocation, goWithJPedal ? "true" : "false");
+	}
 }

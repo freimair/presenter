@@ -35,6 +35,7 @@ import presenter.model.Presentation;
 import presenter.model.Slide;
 import presenter.model.Time;
 import presenter.ui.OpenDialog;
+import presenter.ui.SettingsDialog;
 import presenter.ui.presentation.PresenterControl;
 
 
@@ -235,6 +236,18 @@ public class EditDialog extends ApplicationWindow {
 				Dialog dialog = new OpenDialog(getShell());
 				dialog.open();
 				update();
+			}
+		});
+
+		ToolItem settingsButton = new ToolItem(toolbar, SWT.PUSH);
+		settingsButton.setText("Settings");
+		settingsButton.setToolTipText("Application settings");
+		settingsButton.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				Dialog dialog = new SettingsDialog(getShell());
+				dialog.open();
 			}
 		});
 
